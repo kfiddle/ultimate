@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import GameTracker from './components/gameTracker/GameTracker.jsx';
 
 // const AppProviders = ({ children }) => {
 //   return (
@@ -14,32 +15,36 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 // };
 
 const App = () => {
-    // const getter = useGet('chairs');
-    // const refresher = useRefresher();
+  // const getter = useGet('chairs');
+  // const refresher = useRefresher();
 
-    // useEffect(() => {
-    //   refresher();
+  // useEffect(() => {
+  //   refresher();
 
-    //   const chairsGet = async () => {
-    //     const chairs = await getter();
-    //   };
-    //   chairsGet();
-    // }, [refresher]);
+  //   const chairsGet = async () => {
+  //     const chairs = await getter();
+  //   };
+  //   chairsGet();
+  // }, [refresher]);
 
-    return <div>HELLO</div>;
-    // <AppProviders>
-    //   <Layout>
-    //     <Routes>
-    //       <Route path="/" element={<Dash />} />
-    //       <Route path="/library" element={<Library />} />
+  return (
+    <div>
+      <GameTracker />
+    </div>
+  );
+  // <AppProviders>
+  //   <Layout>
+  //     <Routes>
+  //       <Route path="/" element={<Dash />} />
+  //       <Route path="/library" element={<Library />} />
 
-    //       <Route path="/players" element={<Players />} />
+  //       <Route path="/players" element={<Players />} />
 
-    //       <Route path="/gig-entry" element={<GigEntry />} />
-    //     </Routes>
-    //   </Layout>
-    // </AppProviders>
-    // )
+  //       <Route path="/gig-entry" element={<GigEntry />} />
+  //     </Routes>
+  //   </Layout>
+  // </AppProviders>
+  // )
 };
 
 export default App;
