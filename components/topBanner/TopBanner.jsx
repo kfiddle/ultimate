@@ -11,8 +11,8 @@ const TopBanner = ({
     def: 0
   },
   gameState = {
-    teamName: 'Our Team',
-    opponentName: 'Opponent',
+    teamName: 'Erie',
+    opponentName: 'Some Other',
     teamScore: 0,
     opponentScore: 0,
     time: 0,

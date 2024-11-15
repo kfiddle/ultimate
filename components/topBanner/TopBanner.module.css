@@ -23,18 +23,18 @@
 }
 
 .teamName {
-  font-size: 0.875rem;
+  font-size: 1.75rem;
   color: #a0aec0;
 }
 
 .score {
-  font-size: 1.25rem;
+  font-size: 2.25rem;
   font-weight: bold;
   color: #48bb78;
 }
 
 .scoreDivider {
-  font-size: 1.25rem;
+  font-size: 2rem;
   color: #a0aec0;
 }
 

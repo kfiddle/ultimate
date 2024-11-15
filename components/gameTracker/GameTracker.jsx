@@ -4,8 +4,8 @@ import PlayerStats from "../playerStats/PlayerStats.jsx";
 
 const GameTracker = () => {
     const [gameState, setGameState] = useState({
-        teamName: "Our Team",
-        opponentName: "Opponent",
+        teamName: "Erie Team",
+        opponentName: "Someone Else",
         teamScore: 0,
         opponentScore: 0,
         time: 0,
