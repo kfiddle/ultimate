@@ -25,6 +25,9 @@ const GameTracker = () => {
         { name: "Charlie", active: true, stats: { hasDisk: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
         { name: "David", active: false, stats: { hasDisk: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
         { name: "Eve", active: false, stats: { hasDisk: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
+        { name: "Pauly", active: false, stats: { hasDisk: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
+        { name: "Dom", active: false, stats: { hasDisk: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
+        { name: "Vinnie", active: false, stats: { hasDisk: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
     ]);
 
     const onTimeUpdate = (newTime) => {

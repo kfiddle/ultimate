@@ -9,21 +9,34 @@ const initialPlayers = [
   { name: "Eve", active: true, stats: { hasDisc: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
   { name: "Frank", active: false, stats: { hasDisc: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
   { name: "Grace", active: false, stats: { hasDisc: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
+  { name: "Pauly", active: false, stats: { hasDisc: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
+  { name: "Dom", active: false, stats: { hasDisc: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
+  { name: "Vinnie", active: false, stats: { hasDisc: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
 ];
 
 export default function PlayerStats() {
   const [players, setPlayers] = useState(initialPlayers);
 
   const togglePlayerActive = (playerName) => {
-    setPlayers(players.map(p =>
-      p.name === playerName ? { ...p, active: !p.active } : p
-    ));
+    setPlayers(prevPlayers => {
+      const updatedPlayers = prevPlayers.map(p =>
+        p.name === playerName ? { ...p, active: !p.active } : p
+      );
+      return [
+        ...updatedPlayers.filter(p => p.active),
+        ...updatedPlayers.filter(p => !p.active)
+      ];
+    });
   };
 
   const updateStat = (playerName, stat, increment) => {
-    setPlayers(players.map(p =>
-      p.name === playerName ? { ...p, stats: { ...p.stats, [stat]: Math.max(0, p.stats[stat] + (increment ? 1 : -1)) } } : p
-    ));
+    setPlayers(prevPlayers =>
+      prevPlayers.map(p =>
+        p.name === playerName
+          ? { ...p, stats: { ...p.stats, [stat]: Math.max(0, p.stats[stat] + (increment ? 1 : -1)) } }
+          : p
+      )
+    );
   };
 
   return (
@@ -59,6 +72,7 @@ export default function PlayerStats() {
                     <button 
                       className={styles.statButton}
                       onClick={() => updateStat(player.name, stat, true)}
+                      disabled={!player.active}
                     >
                       <span className={styles.statLabel}>{stat}</span>
                       <span className={styles.statValue}>{value}</span>
