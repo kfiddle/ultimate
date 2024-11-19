@@ -29,10 +29,11 @@
 .inactivePlayer {
     background-color: rgba(51, 51, 51, 0.7);
     opacity: 0.8;
+    height: 20px;
 }
 
 .separator {
-    height: 24px;
+    height: 2.5rem;
 }
 
 .playerNameCell {
@@ -41,14 +42,12 @@
 
 .playerNameButton {
     width: 100%;
-    /* padding: 12px 0px; */
     background-color: transparent;
     border: none;
     color: #ffffff;
     cursor: pointer;
-    font-size: 2rem;
     font-weight: bold;
-    height: 100%;
+    /* height: 100%; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -56,15 +55,24 @@
 
 .activePlayer .playerNameButton {
     color: #3b82f6;
+    font-size: 2rem;
+
 }
 
 .inactivePlayer .playerNameButton {
     color: #9ca3af;
-    font-size: 1.5rem;
+    font-size: 2rem;
+}
+
+.inactivePlayer .statButton {
+    height: 85px;
+    font-size: 20px;
 }
 
 .statCell {
+    position: relative;
     padding: 0;
+
 }
 
 .statButton {
@@ -100,4 +108,31 @@
 
 .statValue {
     font-size: 36px;
+}
+
+
+.longPressMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #4b5563;
+    border-radius: 0 0 8px 8px;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.longPressMenu button {
+    width: 100%;
+    padding: 12px;
+    background-color: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.longPressMenu button:hover {
+    background-color: #6b7280;
 }
