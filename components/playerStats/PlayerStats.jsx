@@ -1,4 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
+import Disc from "../disc/Disc.jsx";
+
 import styles from "./PlayerStats.module.css";
 
 const initialPlayers = [
@@ -36,7 +38,26 @@ export default function PlayerStats() {
         }
         lastUpdateRef.current = now;
 
-        setPlayers((prevPlayers) => prevPlayers.map((p) => (p.name === playerName ? { ...p, stats: { ...p.stats, [stat]: Math.max(0, p.stats[stat] + (increment ? 1 : -1)) } } : p)));
+        setPlayers((prevPlayers) => {
+            const updatedPlayers = prevPlayers.map((p) => {
+                if (p.name === playerName) {
+                    const newValue = Math.max(0, p.stats[stat] + (increment ? 1 : -1));
+                    // If updating hasDisc, set it to 1 or 0 and reset for other players
+                    if (stat === "hasDisc") {
+                        return {
+                            ...p,
+                            stats: { ...p.stats, [stat]: newValue > 0 ? 1 : 0 },
+                        };
+                    }
+                    return { ...p, stats: { ...p.stats, [stat]: newValue } };
+                } else if (stat === "hasDisc" && increment) {
+                    // Reset hasDisc for other players when a player gets the disc
+                    return { ...p, stats: { ...p.stats, hasDisc: 0 } };
+                }
+                return p;
+            });
+            return updatedPlayers;
+        });
     }, []);
 
     const handleTouchStart = useCallback((playerName, stat, event) => {
@@ -89,8 +110,8 @@ export default function PlayerStats() {
                     <tr>
                         <th className={styles.headerCell}>Player</th>
                         {Object.keys(players[0].stats).map((stat) => (
-                            <th key={stat} className={styles.headerCell}>
-                                {stat.replace(/([A-Z])/g, " $1").trim()}
+                            <th key={stat} className={`${styles.headerCell} ${stat === "hasDisc" ? styles.hasDiscHeader : ""}`}>
+                                {stat === "hasDisc" ? "Disc" : stat.replace(/([A-Z])/g, " $1").trim()}
                             </th>
                         ))}
                     </tr>
@@ -110,15 +131,20 @@ export default function PlayerStats() {
                                     </button>
                                 </td>
                                 {Object.entries(player.stats).map(([stat, value]) => (
-                                    <td key={stat} className={styles.statCell}>
+                                    <td key={stat} className={`${styles.statCell} ${stat === "hasDisc" ? styles.hasDiscCell : ""}`}>
                                         <button
-                                            className={`${styles.statButton} ${!player.active ? styles.inactiveStatButton : ""}`}
+                                            className={`${styles.statButton} ${!player.active ? styles.inactiveStatButton : ""} ${stat === "hasDisc" ? styles.hasDiscButton : ""}`}
                                             onTouchStart={(e) => handleTouchStart(player.name, stat, e)}
                                             onTouchEnd={(e) => handleTouchEnd(player.name, stat, e)}
                                             disabled={!player.active}
                                         >
-                                            <span className={styles.statLabel}>{stat}</span>
-                                            <span className={styles.statValue}>{value}</span>
+                                            {stat === "hasDisc" && value > 0 ? (
+                                                <Disc className={styles.discIcon} />
+                                            ) : (
+                                                <>
+                                                    <span className={styles.statLabel}>{stat === "hasDisc" ? "" : stat}</span>
+                                                </>
+                                            )}
                                         </button>
                                         {menuOpen && menuOpen.playerName === player.name && menuOpen.stat === stat && (
                                             <div className={styles.longPressMenu}>
