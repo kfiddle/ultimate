@@ -4,16 +4,16 @@ import Disc from "../disc/Disc.jsx";
 import styles from "./PlayerStats.module.css";
 
 const initialPlayers = [
-    { name: "Alice", active: true, stats: { hasDisc: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
-    { name: "Bob", active: true, stats: { hasDisc: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
-    { name: "Charlie", active: true, stats: { hasDisc: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
-    { name: "David", active: true, stats: { hasDisc: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
-    { name: "Eve", active: true, stats: { hasDisc: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
-    { name: "Frank", active: false, stats: { hasDisc: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
-    { name: "Grace", active: false, stats: { hasDisc: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
-    { name: "Pauly", active: false, stats: { hasDisc: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
-    { name: "Dom", active: false, stats: { hasDisc: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
-    { name: "Vinnie", active: false, stats: { hasDisc: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
+    { name: "Alice", active: true, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
+    { name: "Bob", active: true, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
+    { name: "Charlie", active: true, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
+    { name: "David", active: true, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
+    { name: "Eve", active: true, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
+    { name: "Frank", active: false, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
+    { name: "Grace", active: false, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
+    { name: "Pauly", active: false, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
+    { name: "Dom", active: false, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
+    { name: "Vinnie", active: false, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
 ];
 
 export default function PlayerStats() {
@@ -103,6 +103,9 @@ export default function PlayerStats() {
         };
     }, []);
 
+    const activePlayers = players.filter((player) => player.active);
+    const inactivePlayers = players.filter((player) => !player.active);
+
     return (
         <div className={styles.chartContainer} ref={containerRef}>
             <table className={styles.statsTable}>
@@ -110,14 +113,19 @@ export default function PlayerStats() {
                     <tr>
                         <th className={styles.headerCell}>Player</th>
                         {Object.keys(players[0].stats).map((stat) => (
-                            <th key={stat} className={`${styles.headerCell} ${stat === "hasDisc" ? styles.hasDiscHeader : ""}`}>
+                            <th
+                                key={stat}
+                                className={`${styles.headerCell} ${stat === "hasDisc" ? styles.hasDiscHeader : ""}
+                            ${["drop", "throw", "stall"].includes(stat) ? styles.errorHeader : ""}
+                            `}
+                            >
                                 {stat === "hasDisc" ? "Disc" : stat.replace(/([A-Z])/g, " $1").trim()}
                             </th>
                         ))}
                     </tr>
                 </thead>
                 <tbody>
-                    {players.map((player, index) => (
+                    {activePlayers.map((player, index) => (
                         <React.Fragment key={player.name}>
                             {index === players.filter((p) => p.active).length && (
                                 <tr>
@@ -131,9 +139,19 @@ export default function PlayerStats() {
                                     </button>
                                 </td>
                                 {Object.entries(player.stats).map(([stat, value]) => (
-                                    <td key={stat} className={`${styles.statCell} ${stat === "hasDisc" ? styles.hasDiscCell : ""}`}>
+                                    <td
+                                        key={stat}
+                                        className={`${styles.statCell} ${stat === "hasDisc" ? styles.hasDiscCell : ""}
+                                    ${stat === "D" ? styles.dCell : ""} ${["drop", "throw", "stall"].includes(stat) ? styles.errorCell : ""}`}
+                                    >
                                         <button
-                                            className={`${styles.statButton} ${!player.active ? styles.inactiveStatButton : ""} ${stat === "hasDisc" ? styles.hasDiscButton : ""}`}
+                                            className={`
+                                               ${styles.statButton}
+                                               ${!player.active ? styles.inactiveStatButton : ""}
+                                               ${stat === "hasDisc" ? styles.hasDiscButton : ""}
+                                               ${stat === "D" ? styles.dButton : ""}
+                                               ${["drop", "throw", "stall"].includes(stat) ? styles.errorButton : ""}
+                                           `}
                                             onTouchStart={(e) => handleTouchStart(player.name, stat, e)}
                                             onTouchEnd={(e) => handleTouchEnd(player.name, stat, e)}
                                             disabled={!player.active}
@@ -160,6 +178,15 @@ export default function PlayerStats() {
                     ))}
                 </tbody>
             </table>
+            <div className={styles.playerList}>
+                {inactivePlayers.map((player) => (
+                    <div className={styles.benchedPlayerDiv}>
+                        <button key={player.name} className={styles.inactivePlayerNameButton} onTouchEnd={() => togglePlayerActive(player.name)}>
+                            {player.name}
+                        </button>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
