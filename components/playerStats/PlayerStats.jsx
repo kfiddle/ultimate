@@ -178,7 +178,7 @@ export default function PlayerStats() {
                     ))}
                 </tbody>
             </table>
-            <div className={styles.playerList}>
+            <div className={styles.benchedPlayerList}>
                 {inactivePlayers.map((player) => (
                     <div className={styles.benchedPlayerDiv}>
                         <button key={player.name} className={styles.inactivePlayerNameButton} onTouchEnd={() => togglePlayerActive(player.name)}>

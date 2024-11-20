@@ -201,7 +201,7 @@
     background-color: #6b7280;
 }
 
-.playerList {
+.benchedPlayerList {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
