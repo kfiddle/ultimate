@@ -1,236 +1,116 @@
 .chartContainer {
-    height: calc(100vh - 200px);
-    overflow-y: auto;
-    background-color: #1a1a1a;
-    border-radius: 8px;
-    padding: 16px;
+  height: calc(100vh - 200px);
+  overflow-y: auto;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  padding: 16px;
 }
 
 .statsTable {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 8px;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 8px;
 }
 
 .headerCell {
-    padding: 16px 8px;
-    text-align: center;
-    font-weight: 600;
-    color: #ffffff;
-    text-transform: uppercase;
-    background-color: #3b82f6;
-    font-size: 14px;
+  padding: 16px 8px;
+  text-align: center;
+  font-weight: 600;
+  color: #ffffff;
+  text-transform: uppercase;
+  background-color: #3b82f6;
+  font-size: 14px;
+}
+
+.playerNameHeader {
+  width: 150px;
 }
 
 .errorHeader {
-    background-color: #6b4563;
+  background-color: #6b4563;
 }
 
 .hasDiscHeader {
-    width: 80px;
+  width: 80px;
 }
 
 .dHeader {
-    width: 120px;
+  width: 120px;
 }
 
 .activePlayer {
-    background-color: #2a2a2a;
+  background-color: #2a2a2a;
 }
 
 .inactivePlayer {
-    background-color: rgba(51, 51, 51, 0.7);
-    opacity: 0.8;
-    height: 20px;
+  background-color: rgba(51, 51, 51, 0.7);
+  opacity: 0.8;
+  height: 20px;
 }
 
 .separator {
-    height: 2.5rem;
+  height: 2.5rem;
 }
 
 .playerNameCell {
-    padding: 0;
+  padding: 0;
+  width: 150px;
 }
 
 .playerNameButton {
-    width: 100%;
-    background-color: transparent;
-    border: none;
-    color: #ffffff;
-    cursor: pointer;
-    font-weight: bold;
-    /* height: 100%; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.hasDiscCell {
-    width: 200px;
-}
-
-.dCell {
-    width: 100px;
-}
-
-.hasDiscButton {
-    width: 80px;
-    height: 80px;
-}
-
-.dButton {
-    /* width: 200px; */
-}
-
-.discIcon {
-    width: 5rem;
-    height: 5rem;
-    color: #ffffff;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .activePlayer .playerNameButton {
-    color: #3b82f6;
-    font-size: 2rem;
+  color: #3b82f6;
+  font-size: 2rem;
 }
 
 .inactivePlayer .playerNameButton {
-    color: #9ca3af;
-    font-size: 2rem;
-}
-
-.inactivePlayer .statButton {
-    height: 85px;
-    font-size: 20px;
-}
-
-.statCell {
-    position: relative;
-    padding: 0;
-}
-
-.statButton {
-    width: 100%;
-    height: 120px;
-    background-color: #4b5563;
-    color: #ffffff;
-    border: none;
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease, opacity 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.statButton:hover:not(:disabled) {
-    background-color: #6b7280;
-}
-
-.statButton:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-}
-
-.activePlayer .statButton,
-.inactivePlayer .statButton {
-    width: 100%;
-    height: 120px;
-    background-color: #4b5563;
-    color: #ffffff;
-    border: none;
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease, opacity 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.activePlayer .errorCell .statButton,
-.inactivePlayer .errorCell .statButton {
-    background-color: #6b4563;
-}
-
-.inactivePlayer .statButton {
-    height: 85px;
-    font-size: 20px;
-}
-
-.statLabel {
-    font-size: 14px;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-}
-
-.statValue {
-    font-size: 36px;
-}
-
-.errorCell {
-    background-color: #6b4563;
-}
-
-
-.longPressMenu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background-color: #4b5563;
-    border-radius: 0 0 8px 8px;
-    overflow: hidden;
-    z-index: 10;
-}
-
-.longPressMenu button {
-    width: 100%;
-    padding: 12px;
-    background-color: transparent;
-    border: none;
-    color: #ffffff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.longPressMenu button:hover {
-    background-color: #6b7280;
+  color: #9ca3af;
+  font-size: 2rem;
 }
 
 .benchedPlayerList {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    padding: 20px;
-    background-color: #2a2a2a;
-    border-top: 2px solid #3b82f6;
-    margin: 20px 8px;
-    width: 200px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background-color: #2a2a2a;
+  border-top: 2px solid #3b82f6;
+  margin: 20px 8px;
+  width: 200px;
 }
 
 .benchedPlayerDiv {
-    /* width: fit-content;
-    font-size: 1.25rem; */
-    width: 120px;
+  width: 120px;
 }
 
 .inactivePlayerNameButton {
-    width: 100%;
-    padding: 16px 12px;
-    background-color: #1a1a1a;
-    border: 1px solid #4b5563;
-    border-radius: 8px;
-    color: #9ca3af;
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  width: 100%;
+  padding: 16px 12px;
+  background-color: #1a1a1a;
+  border: 1px solid #4b5563;
+  border-radius: 8px;
+  color: #9ca3af;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
