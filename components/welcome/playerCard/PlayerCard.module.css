@@ -1,0 +1,26 @@
+.card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background-color: white;
+}
+
+.card:hover {
+    background-color: #eff6ff;
+}
+
+.selected {
+    background: linear-gradient(to bottom right, #60a5fa, #8b5cf6);
+    color: white;
+    transform: translateY(-0.5rem) scale(1.05);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 255, 0.3), 0 10px 10px -5px rgba(0, 0, 255, 0.2);
+}
+
+.playerName {
+    font-size: 1.125rem;
+    font-weight: bold;
+}

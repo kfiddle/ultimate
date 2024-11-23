@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import Welcome from './components/welcome/Welcome.jsx';
 import GameTracker from './components/gameTracker/GameTracker.jsx';
 
 // const AppProviders = ({ children }) => {
@@ -29,7 +31,8 @@ const App = () => {
 
   return (
     <div>
-      <GameTracker />
+      {/* <GameTracker /> */}
+      <Welcome />
     </div>
   );
   // <AppProviders>
