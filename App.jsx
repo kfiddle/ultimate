@@ -1,53 +1,52 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-import Welcome from './components/welcome/Welcome.jsx';
-import GameTracker from './components/gameTracker/GameTracker.jsx';
+import Welcome from "./components/welcome/Welcome.jsx";
+import GameTracker from "./components/gameTracker/GameTracker.jsx";
+import { GameProvider } from "./components/contextProviders/GameContext.jsx";
 
-// const AppProviders = ({ children }) => {
-//   return (
-//     <DashboardProvider>
-//       <LibraryProvider>
-//         <RosterProvider>
-//           <GigFormProvider>{children}</GigFormProvider>
-//         </RosterProvider>
-//       </LibraryProvider>
-//     </DashboardProvider>
-//   );
-// };
+const AppProviders = ({ children }) => {
+    return <GameProvider>{children}</GameProvider>;
+};
 
 const App = () => {
-  // const getter = useGet('chairs');
-  // const refresher = useRefresher();
+    const [gameStarting, setgameStarting] = useState(false);
 
-  // useEffect(() => {
-  //   refresher();
+    const startGame = () => setgameStarting(true);
 
-  //   const chairsGet = async () => {
-  //     const chairs = await getter();
-  //   };
-  //   chairsGet();
-  // }, [refresher]);
+    // const getter = useGet('chairs');
+    // const refresher = useRefresher();
 
-  return (
-    <div>
-      {/* <GameTracker /> */}
-      <Welcome />
-    </div>
-  );
-  // <AppProviders>
-  //   <Layout>
-  //     <Routes>
-  //       <Route path="/" element={<Dash />} />
-  //       <Route path="/library" element={<Library />} />
+    // useEffect(() => {
+    //   refresher();
 
-  //       <Route path="/players" element={<Players />} />
+    //   const chairsGet = async () => {
+    //     const chairs = await getter();
+    //   };
+    //   chairsGet();
+    // }, [refresher]);
 
-  //       <Route path="/gig-entry" element={<GigEntry />} />
-  //     </Routes>
-  //   </Layout>
-  // </AppProviders>
-  // )
+    return (
+        <div>
+            <AppProviders>
+                {!gameStarting && <Welcome startGame={startGame} />}
+                {gameStarting && <GameTracker />}
+            </AppProviders>
+        </div>
+    );
+    // <AppProviders>
+    //   <Layout>
+    //     <Routes>
+    //       <Route path="/" element={<Dash />} />
+    //       <Route path="/library" element={<Library />} />
+
+    //       <Route path="/players" element={<Players />} />
+
+    //       <Route path="/gig-entry" element={<GigEntry />} />
+    //     </Routes>
+    //   </Layout>
+    // </AppProviders>
+    // )
 };
 
 export default App;

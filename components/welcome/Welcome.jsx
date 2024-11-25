@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+
+import { GameContext } from "../contextProviders/GameContext.jsx";
 
 import Card from "../ui/card/Card.jsx";
 import CardContent from "../ui/cardContent/CardContent.jsx";
 import CardFooter from "../ui/cardFooter/CardFooter.jsx";
 import ScrollArea from "../ui/scrollArea/ScrollArea.jsx";
 import Banner from "./banner/Banner.jsx";
-import PlayerCard from './playerCard/PlayerCard.jsx';
+import PlayerCard from "./playerCard/PlayerCard.jsx";
 import StartGameButton from "./startGameButton/StartGameButton.jsx";
 import styles from "./Welcome.module.css";
 
@@ -27,7 +29,8 @@ const mockData = {
     ],
 };
 
-export default function Welcome() {
+export default function Welcome({ startGame }) {
+    const { dispatch } = useContext(GameContext);
     const [presentPlayers, setPresentPlayers] = useState([]);
 
     const togglePlayerPresence = (playerId) => {
@@ -36,7 +39,10 @@ export default function Welcome() {
 
     const handleStartGame = () => {
         console.log("Starting game with players:", presentPlayers);
-        // Here you would typically navigate to the game screen or send data to your backend
+        if (presentPlayers.length > 0) {
+            dispatch({ type: "SET_PRESENT_PLAYERS", presentPlayers });
+            startGame();
+        }
     };
 
     return (
