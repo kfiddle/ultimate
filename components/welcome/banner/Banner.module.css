@@ -1,0 +1,30 @@
+.banner {
+    background: linear-gradient(to right, #2563eb, #7c3aed);
+    color: white;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.teamInfo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.discIcon {
+    width: 3rem;
+    height: 3rem;
+    margin-right: 0.5rem;
+}
+
+.teamName {
+    font-size: 1.875rem;
+    font-weight: bold;
+}
+
+.gameInfo {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+}

@@ -1,6 +1,10 @@
 import React from "react";
-import { CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Disc } from "lucide-react";
+
+import CardHeader from "../../ui/cardHeader/CardHeader.jsx";
+import CardTitle from "../../ui/cardTitle/CardTitle.jsx";
+import CardDescription from "../../ui/cardDescription/CardDescription.jsx";
+
+import Disc from "../../disc/Disc.jsx";
 import styles from "./Banner.module.css";
 
 export default function Banner({ teamName, gameName, opposingTeam }) {

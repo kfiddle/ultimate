@@ -1,0 +1,36 @@
+.scrollArea {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}
+
+.viewport {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+    width: 100%;
+    padding-right: 20px;
+    /* To account for the scrollbar width */
+    box-sizing: content-box;
+    /* To ensure padding doesn't affect the overall width */
+}
+
+/* Styling the scrollbar */
+.viewport::-webkit-scrollbar {
+    width: 8px;
+}
+
+.viewport::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.viewport::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.viewport::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

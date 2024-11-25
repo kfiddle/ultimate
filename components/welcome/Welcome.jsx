@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import Banner from "./Banner";
-import PlayerCard from "./PlayerCard.jsx";
-import StartGameButton from "./StartGameButton";
+
+import Card from "../ui/card/Card.jsx";
+import CardContent from "../ui/cardContent/CardContent.jsx";
+import CardFooter from "../ui/cardFooter/CardFooter.jsx";
+import ScrollArea from "../ui/scrollArea/ScrollArea.jsx";
+import Banner from "./banner/Banner.jsx";
+import PlayerCard from './playerCard/PlayerCard.jsx';
+import StartGameButton from "./startGameButton/StartGameButton.jsx";
 import styles from "./Welcome.module.css";
 
 const mockData = {
