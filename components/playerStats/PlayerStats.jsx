@@ -2,6 +2,8 @@ import React, { useState, useContext, useCallback, useRef, useEffect } from "rea
 import { GameContext } from "../contextProviders/GameContext.jsx";
 
 import StatCell from "./statButton/StatCell.jsx";
+import PlayerName from "./playerName/PlayerName.jsx";
+
 import styles from "./PlayerStats.module.css";
 
 export default function PlayerStats() {
@@ -123,9 +125,11 @@ export default function PlayerStats() {
                             )}
                             <tr className={player.active ? styles.activePlayer : styles.inactivePlayer}>
                                 <td className={styles.playerNameCell}>
-                                    <button className={styles.playerNameButton} onTouchEnd={() => togglePlayerActive(player.name)}>
+                                    {/* <button className={styles.playerNameButton} onTouchEnd={() => togglePlayerActive(player.name)}>
                                         {player.name}
-                                    </button>
+                                    </button> */}
+
+                                    <PlayerName player={player} onToggleActive={togglePlayerActive} isActive={true} />
                                 </td>
                                 {Object.entries(player.stats).map(([stat, value]) => (
                                     <StatCell
@@ -149,9 +153,7 @@ export default function PlayerStats() {
             <div className={styles.benchedPlayerList}>
                 {inactivePlayers.map((player) => (
                     <div key={player.name} className={styles.benchedPlayerDiv}>
-                        <button className={styles.inactivePlayerNameButton} onTouchEnd={() => togglePlayerActive(player.name)}>
-                            {player.name}
-                        </button>
+                        <PlayerName player={player} onToggleActive={togglePlayerActive} isActive={false} />
                     </div>
                 ))}
             </div>
