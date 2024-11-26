@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+
+import { GameContext } from "../contextProviders/GameContext.jsx";
+
 import TopBanner from "../topBanner/TopBanner.jsx";
 import PlayerStats from "../playerStats/PlayerStats.jsx";
 
 const GameTracker = () => {
-    const [gameState, setGameState] = useState({
-        teamName: "Erie Team",
-        opponentName: "Someone Else",
-        teamScore: 0,
-        opponentScore: 0,
-        time: 0,
-    });
+    const { gameState, dispatch } = useContext(GameContext);
+
+    const { teamName, presentPlayers, opponentName, teamScore, opponentScore } = gameState;
 
     const [stats, setStats] = useState({
         hasDisk: 0,
@@ -19,22 +18,8 @@ const GameTracker = () => {
         def: 0,
     });
 
-    const [players, setPlayers] = useState([
-        { name: "Alice", active: true, stats: { hasDisk: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
-        { name: "Bob", active: true, stats: { hasDisk: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
-        { name: "Charlie", active: true, stats: { hasDisk: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
-        { name: "David", active: false, stats: { hasDisk: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
-        { name: "Eve", active: false, stats: { hasDisk: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
-        { name: "Pauly", active: false, stats: { hasDisk: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
-        { name: "Dom", active: false, stats: { hasDisk: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
-        { name: "Vinnie", active: false, stats: { hasDisk: 0, assists: 0, goals: 0, errors: 0, def: 0 } },
-    ]);
-
     const onTimeUpdate = (newTime) => {
-        setGameState((prevState) => ({
-            ...prevState,
-            time: newTime,
-        }));
+        dispatch({ type: "TIME", time: newTime });
     };
 
     const updateStat = (playerName, stat, increment) => {

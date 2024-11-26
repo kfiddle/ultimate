@@ -1,7 +1,5 @@
 import React, { useState, useContext } from "react";
-
 import { GameContext } from "../contextProviders/GameContext.jsx";
-
 import Card from "../ui/card/Card.jsx";
 import CardContent from "../ui/cardContent/CardContent.jsx";
 import CardFooter from "../ui/cardFooter/CardFooter.jsx";
@@ -16,16 +14,16 @@ const mockData = {
     gameName: "Season Opener 2024",
     opposingTeam: "Gravity Defiers",
     players: [
-        { id: 1, name: "Alice Johnson" },
-        { id: 2, name: "Bob Smith" },
-        { id: 3, name: "Charlie Brown" },
-        { id: 4, name: "Diana Prince" },
-        { id: 5, name: "Ethan Hunt" },
-        { id: 6, name: "Fiona Gallagher" },
-        { id: 7, name: "George Michael" },
-        { id: 8, name: "Hannah Montana" },
-        { id: 9, name: "Ian Malcolm" },
-        { id: 10, name: "Julia Child" },
+        { id: 1, name: "Alice", active: false, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
+        { id: 2, name: "Bob", active: false, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
+        { id: 3, name: "Charlie", active: false, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
+        { id: 4, name: "David", active: false, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
+        { id: 5, name: "Eve", active: false, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
+        { id: 6, name: "Frank", active: false, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
+        { id: 7, name: "Grace", active: false, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
+        { id: 8, name: "Pauly", active: false, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
+        { id: 9, name: "Dom", active: false, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
+        { id: 10, name: "Vinnie", active: false, stats: { hasDisc: 0, goal: 0, D: 0, drop: 0, throw: 0, stall: 0 } },
     ],
 };
 
@@ -33,14 +31,15 @@ export default function Welcome({ startGame }) {
     const { dispatch } = useContext(GameContext);
     const [presentPlayers, setPresentPlayers] = useState([]);
 
-    const togglePlayerPresence = (playerId) => {
-        setPresentPlayers((current) => (current.includes(playerId) ? current.filter((id) => id !== playerId) : [...current, playerId]));
+    const togglePlayerPresence = (player) => {
+        setPresentPlayers((current) => (current.includes(player.id) ? current.filter((id) => id !== player.id) : [...current, player.id]));
     };
 
     const handleStartGame = () => {
         console.log("Starting game with players:", presentPlayers);
         if (presentPlayers.length > 0) {
-            dispatch({ type: "SET_PRESENT_PLAYERS", presentPlayers });
+            const selectedPlayers = mockData.players.filter((player) => presentPlayers.includes(player.id));
+            dispatch({ type: "SET_PRESENT_PLAYERS", presentPlayers: selectedPlayers });
             startGame();
         }
     };
@@ -54,7 +53,7 @@ export default function Welcome({ startGame }) {
                     <ScrollArea className={styles.scrollArea}>
                         <div className={styles.playerGrid}>
                             {mockData.players.map((player) => (
-                                <PlayerCard key={player.id} player={player} isSelected={presentPlayers.includes(player.id)} onToggle={() => togglePlayerPresence(player.id)} />
+                                <PlayerCard key={player.id} player={player} isSelected={presentPlayers.includes(player.id)} onToggle={() => togglePlayerPresence(player)} />
                             ))}
                         </div>
                     </ScrollArea>

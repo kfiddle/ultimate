@@ -6,15 +6,18 @@ const initialState = {
     presentPlayers: [],
     activePlayer: null,
     gameStarted: false,
-    score: {
-        team1: 0,
-        team2: 0,
-    },
+    teamName: "Erie Team",
+    opponentName: "Other Team",
+    teamScore: 0,
+    opponentScore: 0,
+    time: 0,
 };
 
 const reducer = (state, action) => {
     switch (action.type) {
         case "SET_PRESENT_PLAYERS": {
+            console.log(action.presentPlayers);
+
             return { ...state, presentPlayers: [...action.presentPlayers] };
         }
         case "SELECT_PLAYER":
@@ -50,6 +53,9 @@ const reducer = (state, action) => {
                     [action.team]: state.score[action.team] + 1,
                 },
             };
+        case "TIME": {
+            return { ...state, time: action.time };
+        }
         case "RESET_GAME":
             return initialState;
         default:
