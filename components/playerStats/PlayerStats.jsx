@@ -2,6 +2,8 @@ import React, { useState, useContext, useCallback, useRef, useEffect } from 'rea
 import { GameContext } from '../contextProviders/GameContext.jsx';
 
 import usePush from '../../hooks/usePush.js';
+import useCreateFieldInstance from '../../hooks/useCreateFieldInstance.js';
+import useCreateTouch from '../../hooks/useCreateTouch.js';
 
 import StatCell from './statButton/StatCell.jsx';
 import PlayerName from './playerName/PlayerName.jsx';
@@ -14,35 +16,16 @@ export default function PlayerStats() {
   const { gameState, dispatch } = useContext(GameContext);
   const { activePlayers, benchedPlayers, fieldInstances, currentGameId } = gameState;
 
-  //   const [players, setPlayers] = useState(presentPlayers);
   const [menuOpen, setMenuOpen] = useState(null);
+  const [hasDisc, setHasDisc] = useState(null);
+
   const timerRef = useRef(null);
   const longPressRef = useRef(null);
   const containerRef = useRef(null);
   const lastUpdateRef = useRef(null);
 
-  const saveFieldInstance = async (player, startTime, endTime) => {
-    const push = usePush('field-instances'); // Adjust the endpoint as needed
-
-    const duration = Math.floor((endTime - startTime) / 1000); // Convert to seconds
-
-    const fieldInstanceData = {
-      playerId: player._id,
-      gameId: currentGameId,
-      startTime: new Date(startTime).toISOString(),
-      endTime: new Date(endTime).toISOString(),
-      duration: duration,
-    };
-
-    try {
-      const result = await push(fieldInstanceData);
-      console.log('FieldInstance saved:', result);
-      return result;
-    } catch (error) {
-      console.error('Error saving FieldInstance:', error);
-      throw error;
-    }
-  };
+  const { saveFieldInstance } = useCreateFieldInstance(currentGameId);
+  const { saveTouch } = useCreateTouch(currentGameId);
 
   const togglePlayerActive = (player) => {
     const isCurrentlyActive = activePlayers.some((p) => p._id === player._id);
@@ -84,6 +67,7 @@ export default function PlayerStats() {
   }, []);
 
   const handleTouchStart = useCallback((playerName, stat, event) => {
+    // when 
     event.preventDefault();
     longPressRef.current = null;
     timerRef.current = setTimeout(() => {
@@ -93,11 +77,15 @@ export default function PlayerStats() {
   }, []);
 
   const handleTouchEnd = useCallback(
-    (playerName, stat, event) => {
+    (player, stat, event) => {
       event.preventDefault();
       clearTimeout(timerRef.current);
       if (longPressRef.current === null) {
-        updateStat(playerName, stat, true);
+        if (stat === 'hasDisc') {
+            saveTouch(player);
+            setHasDisc(player)
+        }
+        // updateStat(playerName, stat, true);
       }
       longPressRef.current = null;
     },
@@ -125,9 +113,6 @@ export default function PlayerStats() {
       document.removeEventListener('touchstart', handleTouchOutside);
     };
   }, []);
-
-  //   const activePlayers = players.filter((player) => player.active);
-  //   const inactivePlayers = players.filter((player) => !player.active);
 
   return (
     <div className={styles.chartContainer} ref={containerRef}>
@@ -163,15 +148,15 @@ export default function PlayerStats() {
 
                   <PlayerName player={player} onToggleActive={togglePlayerActive} isActive={true} />
                 </td>
-                {Object.entries(player.stats).map(([stat, value]) => (
+                {Object.entries(stats).map((stat) => (
                   <StatCell
                     key={stat}
                     stat={stat}
-                    value={value}
-                    isActive={player.active}
+                    // value={'v'}
+                    isActive={false}
                     hasDisc={player.stats.hasDisc > 0}
                     onTouchStart={(stat, e) => handleTouchStart(player.name, stat, e)}
-                    onTouchEnd={(stat, e) => handleTouchEnd(player.name, stat, e)}
+                    onTouchEnd={(stat, e) => handleTouchEnd(player, stat, e)}
                     menuOpen={menuOpen && menuOpen.playerName === player.name && menuOpen.stat === stat}
                     onMenuAction={(stat, increment) => handleMenuAction(player.name, stat, increment)}
                     onCloseMenu={closeMenu}
