@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
+import useGet from './hooks/useGet.js';
+
 import Welcome from './components/welcome/Welcome.jsx';
 import GameTracker from './components/gameTracker/GameTracker.jsx';
 import { GameProvider } from './components/contextProviders/GameContext.jsx';
@@ -15,7 +17,6 @@ const App = () => {
 
   const startGame = () => setgameStarting(true);
 
-  // const getter = useGet('chairs');
   // const refresher = useRefresher();
 
   // useEffect(() => {
@@ -26,6 +27,8 @@ const App = () => {
   //   };
   //   chairsGet();
   // }, [refresher]);
+
+ 
 
   return (
     <div>

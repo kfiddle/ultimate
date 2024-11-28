@@ -3,8 +3,8 @@ import React, { createContext, useReducer, useEffect } from 'react';
 export const GameContext = createContext();
 
 const initialState = {
-  presentPlayers: [],
-  activePlayer: null,
+  activePlayers: [],
+  benchedPlayers: [], // This will initially contain all present players
   gameStarted: false,
   teamName: '',
   opponentName: 'Rival',
@@ -18,8 +18,8 @@ const reducer = (state, action) => {
     case 'SET_TEAM': {
       return { ...state, teamName: action.teamName };
     }
-    case 'SET_PRESENT_PLAYERS': {
-      return { ...state, presentPlayers: [...action.presentPlayers] };
+    case 'SET_BENCHED_PLAYERS': {
+      return { ...state, benchedPlayers: [...action.players] };
     }
     case 'SELECT_PLAYER':
       return {
@@ -31,11 +31,21 @@ const reducer = (state, action) => {
         ...state,
         presentPlayers: state.presentPlayers.filter((player) => player.id !== action.playerId),
       };
-    case 'SET_ACTIVE_PLAYER':
+
+    case 'ADD_ACTIVE_PLAYER':
+      const { activePlayers } = state;
+      const { player } = action;
       return {
         ...state,
-        activePlayer: action.player,
+        activePlayers: [...activePlayers, player],
       };
+
+    case 'BENCH_PLAYER':
+      return {
+        ...state,
+        activePlayers: state.activePlayers.filter((p) => p._id !== action.player._id),
+      };
+
     case 'START_GAME':
       return {
         ...state,

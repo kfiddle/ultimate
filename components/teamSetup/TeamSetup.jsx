@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { GameContext } from '../contextProviders/GameContext.jsx';
-import styles from './TeamSetup.module.css';
-import usePush from '../../hooks/usePush';
 
+import usePush from '../../hooks/usePush';
+import useGet from '../../hooks/useGet.js';
+
+import styles from './TeamSetup.module.css';
 const TeamSetup = ({ startGame }) => {
   const { dispatch } = useContext(GameContext);
 
@@ -11,6 +13,21 @@ const TeamSetup = ({ startGame }) => {
   const [isFormValid, setIsFormValid] = useState(false);
 
   const createTeamAndPlayers = usePush('teams/create-team-and-players');
+
+  const getter = useGet('players/team/67479c3b15308de9f27d17ce');
+
+  useEffect(() => {
+    const testGetter = async () => {
+      const testPlayers = await getter();
+      if (testPlayers) {
+        dispatch({ type: 'SET_BENCHED_PLAYERS', players: testPlayers });
+        dispatch({ type: 'SET_TEAM', teamName: teamName, teamId: '67479c3b15308de9f27d17ce' });
+        startGame();
+        // console.log(testPlayers)
+      }
+    };
+    testGetter();
+  }, []);
 
   useEffect(() => {
     const isValid = teamName.trim() !== '' && players.filter((player) => player.trim().includes(' ')).length >= 4;
@@ -50,7 +67,8 @@ const TeamSetup = ({ startGame }) => {
             hasDisc: false,
           }));
 
-          dispatch({ type: 'SET_PRESENT_PLAYERS', presentPlayers });
+          // at start of game, all players are on bench
+          dispatch({ type: 'SET_BENCHED_PLAYERS', presentPlayers });
           dispatch({ type: 'SET_TEAM', teamName: teamName, teamId: result.teamId });
 
           startGame();

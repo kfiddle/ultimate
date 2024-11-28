@@ -10,20 +10,22 @@ const stats = ['hasDisc', 'goal', 'def', 'drop', 'throw', 'stall'];
 
 export default function PlayerStats() {
   const { gameState, dispatch } = useContext(GameContext);
-  const { presentPlayers } = gameState;
+  const { activePlayers, benchedPlayers } = gameState;
 
-  const [players, setPlayers] = useState(presentPlayers);
+  //   const [players, setPlayers] = useState(presentPlayers);
   const [menuOpen, setMenuOpen] = useState(null);
   const timerRef = useRef(null);
   const longPressRef = useRef(null);
   const containerRef = useRef(null);
   const lastUpdateRef = useRef(null);
 
-  const togglePlayerActive = (playerName) => {
-    setPlayers((prevPlayers) => {
-      const updatedPlayers = prevPlayers.map((p) => (p.name === playerName ? { ...p, active: !p.active } : p));
-      return [...updatedPlayers.filter((p) => p.active), ...updatedPlayers.filter((p) => !p.active)];
-    });
+  const togglePlayerActive = (player) => {
+    // setPlayers((prevPlayers) => {
+    //   const updatedPlayers = prevPlayers.map((p) => (p.name === playerName ? { ...p, active: !p.active } : p));
+    //   return [...updatedPlayers.filter((p) => p.active), ...updatedPlayers.filter((p) => !p.active)];
+    // });
+
+    dispatch({ type: 'ADD_ACTIVE_PLAYER', player });
   };
 
   const updateStat = useCallback((playerName, stat, increment) => {
@@ -96,8 +98,8 @@ export default function PlayerStats() {
     };
   }, []);
 
-  const activePlayers = players.filter((player) => player.active);
-  const inactivePlayers = players.filter((player) => !player.active);
+  //   const activePlayers = players.filter((player) => player.active);
+  //   const inactivePlayers = players.filter((player) => !player.active);
 
   return (
     <div className={styles.chartContainer} ref={containerRef}>
@@ -120,7 +122,7 @@ export default function PlayerStats() {
         <tbody>
           {activePlayers.map((player, index) => (
             <React.Fragment key={player.name}>
-              {index === players.filter((p) => p.active).length && (
+              {index === activePlayers.filter((p) => p.active).length && (
                 <tr>
                   <td colSpan={6} className={styles.separator}></td>
                 </tr>
@@ -153,7 +155,7 @@ export default function PlayerStats() {
         </tbody>
       </table>
       <div className={styles.benchedPlayerList}>
-        {inactivePlayers.map((player) => (
+        {benchedPlayers.map((player) => (
           <div key={player.name} className={styles.benchedPlayerDiv}>
             <PlayerName player={player} onToggleActive={togglePlayerActive} isActive={false} />
           </div>
