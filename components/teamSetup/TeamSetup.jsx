@@ -11,9 +11,9 @@ const TeamSetup = ({ startGame }) => {
   const [isFormValid, setIsFormValid] = useState(false);
 
   const createTeamAndPlayers = usePush('teams/create-team-and-players');
-  
+
   useEffect(() => {
-    const isValid = teamName.trim() !== '' && players.filter(player => player.trim().includes(' ')).length >= 4;
+    const isValid = teamName.trim() !== '' && players.filter((player) => player.trim().includes(' ')).length >= 4;
     setIsFormValid(isValid);
   }, [teamName, players]);
 
@@ -43,15 +43,26 @@ const TeamSetup = ({ startGame }) => {
           players: players.filter((player) => player.trim() !== ''),
         });
         if (result.success) {
-          
+          const presentPlayers = result.playerIds.map((id, index) => ({
+            id,
+            name: players[index].trim(),
+            isActive: true,
+            hasDisc: false,
+          }));
+
+          dispatch({ type: 'SET_PRESENT_PLAYERS', presentPlayers });
+          dispatch({ type: 'SET_TEAM', teamName: teamName, teamId: result.teamId });
+
           startGame();
         } else {
           console.error('Failed to create team and players:', result.message);
           // Handle error (e.g., show error message to user)
+          alert('Failed to create team and players. Please try again.');
         }
       } catch (error) {
         console.error('Error creating team and players:', error);
         // Handle error (e.g., show error message to user)
+        alert('An error occurred while creating the team and players. Please try again.');
       }
     }
   };
