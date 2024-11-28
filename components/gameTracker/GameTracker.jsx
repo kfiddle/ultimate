@@ -10,14 +10,6 @@ const GameTracker = () => {
 
   const { teamName, presentPlayers, opponentName, teamScore, opponentScore } = gameState;
 
-//   const [stats, setStats] = useState({
-//     hasDisk: 0,
-//     assists: 0,
-//     goals: 0,
-//     errors: 0,
-//     def: 0,
-//   });
-
   const onTimeUpdate = (newTime) => {
     dispatch({ type: 'TIME', time: newTime });
   };

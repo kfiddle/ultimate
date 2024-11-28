@@ -15,19 +15,23 @@ const TeamSetup = ({ startGame }) => {
   const createTeamAndPlayers = usePush('teams/create-team-and-players');
 
   const getter = useGet('players/team/67479c3b15308de9f27d17ce');
+  const pusher = usePush()
 
   useEffect(() => {
     const testGetter = async () => {
       const testPlayers = await getter();
       if (testPlayers) {
         dispatch({ type: 'SET_BENCHED_PLAYERS', players: testPlayers });
-        dispatch({ type: 'SET_TEAM', teamName: teamName, teamId: '67479c3b15308de9f27d17ce' });
+        dispatch({ type: 'SET_TEAM', teamName: 'teamName', teamId: '67479c3b15308de9f27d17ce' });
         startGame();
-        // console.log(testPlayers)
       }
     };
     testGetter();
   }, []);
+
+  const gameTestStarter = async () => {
+    const testPlayers = await getter();
+  };
 
   useEffect(() => {
     const isValid = teamName.trim() !== '' && players.filter((player) => player.trim().includes(' ')).length >= 4;

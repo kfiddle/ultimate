@@ -6,6 +6,7 @@ const initialState = {
   activePlayers: [],
   benchedPlayers: [], // This will initially contain all present players
   gameStarted: false,
+  fieldInstances: {}, //[playerId]: { startTime: timestamp }
   teamName: '',
   opponentName: 'Rival',
   teamScore: 0,
@@ -18,6 +19,7 @@ const reducer = (state, action) => {
     case 'SET_TEAM': {
       return { ...state, teamName: action.teamName };
     }
+    // this for starting game only
     case 'SET_BENCHED_PLAYERS': {
       return { ...state, benchedPlayers: [...action.players] };
     }
@@ -32,18 +34,39 @@ const reducer = (state, action) => {
         presentPlayers: state.presentPlayers.filter((player) => player.id !== action.playerId),
       };
 
+    case 'TOGGLE_PLAYER': {
+      const { player } = action;
+      const isCurrentlyActive = state.activePlayers.some((p) => p._id === player._id);
+      const currentTime = Date.now();
+      return {
+        ...state,
+        activePlayers: isCurrentlyActive ? state.activePlayers.filter((p) => p._id !== player._id) : [...state.activePlayers, player],
+        benchedPlayers: isCurrentlyActive ? [...state.benchedPlayers, player] : state.benchedPlayers.filter((p) => p._id !== player._id),
+        fieldInstances: isCurrentlyActive
+          ? {
+              ...state.fieldInstances,
+              [player._id]: undefined, // Remove the instance when benched
+            }
+          : {
+              ...state.fieldInstances,
+              [player._id]: { startTime: currentTime }, // Start new instance
+            },
+      };
+    }
     case 'ADD_ACTIVE_PLAYER':
-      const { activePlayers } = state;
+      const { activePlayers, benchedPlayers } = state;
       const { player } = action;
       return {
         ...state,
         activePlayers: [...activePlayers, player],
+        benchedPlayers: benchedPlayers.filter((p) => p._id !== player._id),
       };
 
     case 'BENCH_PLAYER':
       return {
         ...state,
         activePlayers: state.activePlayers.filter((p) => p._id !== action.player._id),
+        benchedPlayers: [...benchedPlayers, player],
       };
 
     case 'START_GAME':
@@ -79,7 +102,7 @@ export const GameProvider = ({ children }) => {
 
   useEffect(() => {
     // You can add any side effects here, such as saving the game state to local storage
-    console.log('Game state updated:', gameState);
+    // console.log('Game state updated:', gameState);
   }, [gameState]);
 
   return <GameContext.Provider value={{ gameState, dispatch }}>{children}</GameContext.Provider>;
