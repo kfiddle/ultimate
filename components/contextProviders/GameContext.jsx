@@ -3,6 +3,7 @@ import React, { createContext, useReducer, useEffect } from 'react';
 export const GameContext = createContext();
 
 const initialState = {
+  currentGameId: '',
   activePlayers: [],
   benchedPlayers: [], // This will initially contain all present players
   gameStarted: false,
@@ -18,6 +19,9 @@ const reducer = (state, action) => {
   switch (action.type) {
     case 'SET_TEAM': {
       return { ...state, teamName: action.teamName };
+    }
+    case 'SET_CURRENT_GAME_ID': {
+      return { ...state, currentGameId: action.gameId };
     }
     // this for starting game only
     case 'SET_BENCHED_PLAYERS': {

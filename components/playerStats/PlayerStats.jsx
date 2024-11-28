@@ -1,6 +1,8 @@
 import React, { useState, useContext, useCallback, useRef, useEffect } from 'react';
 import { GameContext } from '../contextProviders/GameContext.jsx';
 
+import usePush from '../../hooks/usePush.js';
+
 import StatCell from './statButton/StatCell.jsx';
 import PlayerName from './playerName/PlayerName.jsx';
 
@@ -10,7 +12,7 @@ const stats = ['hasDisc', 'goal', 'def', 'drop', 'throw', 'stall'];
 
 export default function PlayerStats() {
   const { gameState, dispatch } = useContext(GameContext);
-  const { activePlayers, benchedPlayers, fieldInstances } = gameState;
+  const { activePlayers, benchedPlayers, fieldInstances, currentGameId } = gameState;
 
   //   const [players, setPlayers] = useState(presentPlayers);
   const [menuOpen, setMenuOpen] = useState(null);
@@ -19,14 +21,14 @@ export default function PlayerStats() {
   const containerRef = useRef(null);
   const lastUpdateRef = useRef(null);
 
-  const saveFieldInstance = async (playerId, gameId, startTime, endTime) => {
+  const saveFieldInstance = async (player, startTime, endTime) => {
     const push = usePush('field-instances'); // Adjust the endpoint as needed
 
     const duration = Math.floor((endTime - startTime) / 1000); // Convert to seconds
 
     const fieldInstanceData = {
-      player: playerId,
-      game: gameId,
+      playerId: player._id,
+      gameId: currentGameId,
       startTime: new Date(startTime).toISOString(),
       endTime: new Date(endTime).toISOString(),
       duration: duration,
@@ -48,7 +50,7 @@ export default function PlayerStats() {
 
     if (isCurrentlyActive) {
       const startTime = fieldInstances[player._id].startTime;
-      saveFieldInstance(player._id, currentGameId, startTime, currentTime);
+      saveFieldInstance(player, startTime, currentTime);
     }
 
     dispatch({ type: 'TOGGLE_PLAYER', player });

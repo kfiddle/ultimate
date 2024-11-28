@@ -5,6 +5,10 @@ import usePush from '../../hooks/usePush';
 import useGet from '../../hooks/useGet.js';
 
 import styles from './TeamSetup.module.css';
+
+const testHomeTeam = '67479c3b15308de9f27d17ce';
+const rivalTestTeam = '674796d715308de9f27d17c2';
+
 const TeamSetup = ({ startGame }) => {
   const { dispatch } = useContext(GameContext);
 
@@ -14,23 +18,22 @@ const TeamSetup = ({ startGame }) => {
 
   const createTeamAndPlayers = usePush('teams/create-team-and-players');
 
-  const getter = useGet('players/team/67479c3b15308de9f27d17ce');
-  const pusher = usePush()
+  // const { name, location, date, teamIds, playerIds } = req.body;
 
-  useEffect(() => {
-    const testGetter = async () => {
-      const testPlayers = await getter();
-      if (testPlayers) {
-        dispatch({ type: 'SET_BENCHED_PLAYERS', players: testPlayers });
-        dispatch({ type: 'SET_TEAM', teamName: 'teamName', teamId: '67479c3b15308de9f27d17ce' });
-        startGame();
-      }
-    };
-    testGetter();
-  }, []);
+  const getter = useGet('players/team/67479c3b15308de9f27d17ce');
+  const pusher = usePush('games');
 
   const gameTestStarter = async () => {
     const testPlayers = await getter();
+    if (testPlayers) {
+      dispatch({ type: 'SET_BENCHED_PLAYERS', players: testPlayers });
+      dispatch({ type: 'SET_TEAM', teamName: 'teamName', teamId: testHomeTeam });
+      const result = await pusher({ name: 'Game One', teamIds: [testHomeTeam, rivalTestTeam], playerIds: testPlayers.map((p) => p._id) });
+      if (result) {
+        dispatch({ type: 'SET_CURRENT_GAME_ID', gameId: '6748c23eea2416561994b165' });
+        startGame();
+      }
+    }
   };
 
   useEffect(() => {
@@ -141,8 +144,9 @@ const TeamSetup = ({ startGame }) => {
         </div>
 
         <button
-          onClick={handleStartGame}
-          disabled={!isFormValid}
+          // onClick={handleStartGame}
+          // disabled={!isFormValid}
+          onClick={gameTestStarter}
           className={`${styles.startButton} ${!isFormValid ? styles.disabled : ''}`}
         >
           Start Game
