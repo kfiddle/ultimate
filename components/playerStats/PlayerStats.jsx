@@ -2,9 +2,10 @@ import React, { useState, useContext, useCallback, useRef, useEffect } from 'rea
 import { GameContext } from '../contextProviders/GameContext.jsx';
 
 import usePush from '../../hooks/usePush.js';
+import usePut from '../../hooks/usePut.js';
+
 import useCreateFieldInstance from '../../hooks/useCreateFieldInstance.js';
 import useCreateTouch from '../../hooks/useCreateTouch.js';
-import useCreateGoal from '../../hooks/useCreateGoal.js';
 
 import StatCell from './statButton/StatCell.jsx';
 import PlayerName from './playerName/PlayerName.jsx';
@@ -25,9 +26,10 @@ export default function PlayerStats() {
   const containerRef = useRef(null);
   const lastUpdateRef = useRef(null);
 
+  const touchEditor = usePut(`touches/${playerWithDisc?.touchId}`);
+
   const { saveFieldInstance } = useCreateFieldInstance(currentGameId, time);
   const { saveTouch } = useCreateTouch(currentGameId, time);
-  const { saveGoal } = useCreateGoal(currentGameId, time, playerWithDisc);
 
   const togglePlayerActive = (player) => {
     const isCurrentlyActive = activePlayers.some((p) => p._id === player._id);
@@ -76,11 +78,6 @@ export default function PlayerStats() {
     }, 500);
   }, []);
 
-  //   if (stat === 'hasDisc') {
-  //     saveTouch(player, playerWithDisc?.touchId).then(newTouch => {
-  //       setPlayerWithDisc({ ...player, touchId: newTouch._id });
-  //     });
-
   const handleTouchEnd = (player, stat, event) => {
     event.preventDefault();
     clearTimeout(timerRef.current);
@@ -89,15 +86,16 @@ export default function PlayerStats() {
         saveTouch(player, playerWithDisc?.touchId).then((newlySavedTouch) => {
           setPlayerWithDisc({ ...player, touchId: newlySavedTouch._id });
         });
-
-        // setPlayerWithDisc(player);
       } else if (stat === 'goal') {
-        saveGoal(player, playerWithDisc?.touchId, 'goal').then(() => {
+        saveTouch(player, playerWithDisc?.touchId, 'goal').then(() => {
           setPlayerWithDisc(null);
           dispatch({ type: 'UPDATE_TEAM_SCORE' });
         });
         setPlayerWithDisc(null);
         dispatch({ type: 'UPDATE_TEAM_SCORE' });
+      } else if (['drop', 'throw', 'stall'].includes(stat) && playerWithDisc?.touchId) {
+        touchEditor({ turnover: stat });
+        setPlayerWithDisc(null);
       }
     }
     longPressRef.current = null;
@@ -165,7 +163,7 @@ export default function PlayerStats() {
                   <StatCell
                     key={stat}
                     stat={stat}
-                    anyoneHasDisc={playerWithDisc?.player}
+                    anyoneHasDisc={playerWithDisc}
                     hasDisc={playerWithDisc?._id === player._id}
                     onTouchStart={(stat, e) => handleTouchStart(player.name, stat, e)}
                     onTouchEnd={(stat, e) => handleTouchEnd(player, stat, e)}
