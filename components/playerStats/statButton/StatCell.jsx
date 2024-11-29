@@ -4,7 +4,7 @@ import Disc from '../../disc/Disc.jsx';
 
 import styles from './StatCell.module.css';
 
-const StatCell = ({ stat, isActive, hasDisc, onTouchStart, onTouchEnd, menuOpen, onMenuAction, onCloseMenu, anyoneHasDisc }) => {
+const StatCell = ({ stat, hasDisc, onTouchStart, onTouchEnd, menuOpen, onMenuAction, onCloseMenu, anyoneHasDisc }) => {
   const { gameState } = useContext(GameContext);
   const { isClockRunning } = gameState;
 

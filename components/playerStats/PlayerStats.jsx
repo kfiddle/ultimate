@@ -31,7 +31,7 @@ export default function PlayerStats() {
 
   const togglePlayerActive = (player) => {
     const isCurrentlyActive = activePlayers.some((p) => p._id === player._id);
-    const currentTime = Date.now();
+    const currentTime = time;
 
     if (isCurrentlyActive) {
       const startTime = fieldInstances[player._id].startTime;
@@ -76,15 +76,26 @@ export default function PlayerStats() {
     }, 500);
   }, []);
 
+  //   if (stat === 'hasDisc') {
+  //     saveTouch(player, playerWithDisc?.touchId).then(newTouch => {
+  //       setPlayerWithDisc({ ...player, touchId: newTouch._id });
+  //     });
+
   const handleTouchEnd = (player, stat, event) => {
     event.preventDefault();
     clearTimeout(timerRef.current);
     if (longPressRef.current === null) {
       if (stat === 'hasDisc') {
-        saveTouch(player);
-        setPlayerWithDisc(player);
+        saveTouch(player, playerWithDisc?.touchId).then((newlySavedTouch) => {
+          setPlayerWithDisc({ ...player, touchId: newlySavedTouch._id });
+        });
+
+        // setPlayerWithDisc(player);
       } else if (stat === 'goal') {
-        saveGoal(player);
+        saveGoal(player, playerWithDisc?.touchId, 'goal').then(() => {
+          setPlayerWithDisc(null);
+          dispatch({ type: 'UPDATE_TEAM_SCORE' });
+        });
         setPlayerWithDisc(null);
         dispatch({ type: 'UPDATE_TEAM_SCORE' });
       }
@@ -116,6 +127,7 @@ export default function PlayerStats() {
 
   return (
     <div className={styles.chartContainer} ref={containerRef}>
+      <button onClick={() => console.log(playerWithDisc)}>TEST</button>
       <table className={styles.statsTable}>
         <thead>
           <tr>
@@ -153,7 +165,7 @@ export default function PlayerStats() {
                   <StatCell
                     key={stat}
                     stat={stat}
-                    anyoneHasDisc={playerWithDisc}
+                    anyoneHasDisc={playerWithDisc?.player}
                     hasDisc={playerWithDisc?._id === player._id}
                     onTouchStart={(stat, e) => handleTouchStart(player.name, stat, e)}
                     onTouchEnd={(stat, e) => handleTouchEnd(player, stat, e)}

@@ -1,14 +1,14 @@
 import usePush from './usePush';
 
-const useCreateGoal = (currentGameId, time, playerWithDisc) => {
-  const saveGoal = async (player) => {
-    const push = usePush('goals'); // Adjust the endpoint as needed
+const useCreateGoal = (currentGameId, time) => {
+  const saveGoal = async (scorer, previousTouchId = null) => {
+    const push = usePush('goals');
 
     const goalData = {
-      scorerId: player._id,
-      assisterId: playerWithDisc._id,
+      scorerId: scorer._id,
       gameId: currentGameId,
       timestamp: time,
+      previousTouch: previousTouchId,
     };
 
     try {

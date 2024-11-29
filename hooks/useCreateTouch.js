@@ -1,19 +1,19 @@
 import usePush from './usePush';
 
 const useCreateTouch = (currentGameId, time) => {
-  const saveTouch = async (player, touchData) => {
-    const push = usePush('touches'); // Adjust the endpoint as needed
+  const saveTouch = async (player, previousTouchId = null, type) => {
+    const push = usePush('touches');
 
-    const touchInstanceData = {
+    const touchData = {
       playerId: player._id,
       gameId: currentGameId,
-      type: touchData?.type || null,
-      turnover: touchData?.turnover || null,
+      type: type, // 'catch', 'pickup', or 'goal'
+      previousTouch: previousTouchId,
       timestamp: time,
     };
 
     try {
-      const result = await push(touchInstanceData);
+      const result = await push(touchData);
       console.log('Touch saved:', result);
       return result;
     } catch (error) {
