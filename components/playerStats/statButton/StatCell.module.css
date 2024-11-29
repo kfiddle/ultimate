@@ -4,11 +4,15 @@
 }
 
 .hasDiscCell {
-  width: 15%;
+  width: 20%;
 }
 
 .dCell {
   width: 15%;
+}
+
+.goalCell {
+  width: 10%;
 }
 
 .errorCell {
@@ -31,17 +35,17 @@
   align-items: center;
 }
 
-.statButton:hover:not(:disabled) {
+/* .statButton:hover:not(:disabled) {
   background-color: #6b7280;
-}
+} */
 
 .statButton:disabled {
   cursor: not-allowed;
-  opacity: 0.1;
+  opacity: 0.3;
 }
 
 .clockStoppedButton {
-  opacity: 0.1;
+  opacity: 0.3;
   pointer-events: none;
 }
 
@@ -68,8 +72,24 @@
 }
 
 .disabledErrorButton {
-  opacity: 0.5;
+  opacity: 0.3;
   cursor: not-allowed;
+}
+
+.highlightedGoalButton {
+  opacity: 1;
+  /* background-color: rgba(37, 99, 235, 0.1); */
+}
+
+.highlightedGoalButton:hover:not(:disabled) {
+  background-color: rgba(37, 99, 235, 0.2);
+}
+
+.disabledGoalButton,
+.disabledDefButton {
+  opacity: 0.3;
+  pointer-events: none;
+  background-color: transparent;
 }
 
 .statLabel {

@@ -27,7 +27,7 @@ const TeamSetup = ({ startGame }) => {
     const testPlayers = await getter();
     if (testPlayers) {
       dispatch({ type: 'SET_BENCHED_PLAYERS', players: testPlayers });
-      dispatch({ type: 'SET_TEAM', teamName: 'teamName', teamId: testHomeTeam });
+      dispatch({ type: 'SET_TEAM', team: 'teamName', teamId: testHomeTeam });
       const result = await pusher({ name: 'Game One', teamIds: [testHomeTeam, rivalTestTeam], playerIds: testPlayers.map((p) => p._id) });
       if (result) {
         dispatch({ type: 'SET_CURRENT_GAME_ID', gameId: '6748c23eea2416561994b165' });

@@ -83,9 +83,10 @@ export default function PlayerStats() {
       if (stat === 'hasDisc') {
         saveTouch(player);
         setPlayerWithDisc(player);
-      } else if (stat === 'goald') {
+      } else if (stat === 'goal') {
         saveGoal(player);
         setPlayerWithDisc(null);
+        dispatch({ type: 'UPDATE_TEAM_SCORE' });
       }
     }
     longPressRef.current = null;
@@ -152,7 +153,7 @@ export default function PlayerStats() {
                   <StatCell
                     key={stat}
                     stat={stat}
-                    isActive={playerWithDisc?._id === player._id}
+                    anyoneHasDisc={playerWithDisc}
                     hasDisc={playerWithDisc?._id === player._id}
                     onTouchStart={(stat, e) => handleTouchStart(player.name, stat, e)}
                     onTouchEnd={(stat, e) => handleTouchEnd(player, stat, e)}

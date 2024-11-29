@@ -8,10 +8,10 @@ const initialState = {
   benchedPlayers: [], // This will initially contain all present players
   gameStarted: false,
   fieldInstances: {}, //[playerId]: { startTime: timestamp }
-  teamName: '',
-  opponentName: 'Rival',
+  team: 'Us',
+  rival: 'Them',
   teamScore: 0,
-  opponentScore: 0,
+  rivalScore: 0,
   time: 0,
   isClockRunning: false,
 };
@@ -19,7 +19,10 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case 'SET_TEAM': {
-      return { ...state, teamName: action.teamName };
+      return { ...state, team: action.team };
+    }
+    case 'SET_RIVAL': {
+      return { ...state, rival: action.rival };
     }
     case 'SET_CURRENT_GAME_ID': {
       return { ...state, currentGameId: action.gameId };
@@ -84,13 +87,15 @@ const reducer = (state, action) => {
         ...state,
         gameStarted: false,
       };
-    case 'UPDATE_SCORE':
+    case 'UPDATE_TEAM_SCORE':
       return {
         ...state,
-        score: {
-          ...state.score,
-          [action.team]: state.score[action.team] + 1,
-        },
+        teamScore: state.teamScore + 1,
+      };
+    case 'UPDATE_RIVAL_SCORE':
+      return {
+        ...state,
+        rivalScore: state.rivalScore + 1,
       };
     case 'UPDATE_TIME':
       return { ...state, time: action.payload };
