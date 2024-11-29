@@ -42,7 +42,7 @@ const reducer = (state, action) => {
     case 'TOGGLE_PLAYER': {
       const { player } = action;
       const isCurrentlyActive = state.activePlayers.some((p) => p._id === player._id);
-      const currentTime = Date.now();
+      const currentTime = state.time;
       return {
         ...state,
         activePlayers: isCurrentlyActive ? state.activePlayers.filter((p) => p._id !== player._id) : [...state.activePlayers, player],

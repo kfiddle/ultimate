@@ -1,17 +1,18 @@
 import usePush from './usePush';
 
-const useCreateFieldInstance = (currentGameId) => {
-  const saveFieldInstance = async (player, startTime, endTime) => {
+const useCreateFieldInstance = (currentGameId, time) => {
+  const saveFieldInstance = async (player, startTime) => {
     const push = usePush('field-instances'); // Adjust the endpoint as needed
 
-    const duration = Math.floor((endTime - startTime) / 1000); // Convert to seconds
+    // startTime was saved in reducer from state.time.
+    const duration = Math.floor(time - startTime);
 
     const fieldInstanceData = {
       playerId: player._id,
       gameId: currentGameId,
-      startTime: new Date(startTime).toISOString(),
-      endTime: new Date(endTime).toISOString(),
-      duration: duration,
+      startTime: startTime,
+      endTime: time,
+      duration: startTime !== 0 ? duration : time,
     };
 
     try {

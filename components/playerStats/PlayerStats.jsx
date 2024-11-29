@@ -4,6 +4,7 @@ import { GameContext } from '../contextProviders/GameContext.jsx';
 import usePush from '../../hooks/usePush.js';
 import useCreateFieldInstance from '../../hooks/useCreateFieldInstance.js';
 import useCreateTouch from '../../hooks/useCreateTouch.js';
+import useCreateGoal from '../../hooks/useCreateGoal.js';
 
 import StatCell from './statButton/StatCell.jsx';
 import PlayerName from './playerName/PlayerName.jsx';
@@ -24,8 +25,9 @@ export default function PlayerStats() {
   const containerRef = useRef(null);
   const lastUpdateRef = useRef(null);
 
-  const { saveFieldInstance } = useCreateFieldInstance(currentGameId);
+  const { saveFieldInstance } = useCreateFieldInstance(currentGameId, time);
   const { saveTouch } = useCreateTouch(currentGameId, time);
+  const { saveGoal } = useCreateGoal(currentGameId, time, playerWithDisc);
 
   const togglePlayerActive = (player) => {
     const isCurrentlyActive = activePlayers.some((p) => p._id === player._id);
@@ -39,32 +41,32 @@ export default function PlayerStats() {
     dispatch({ type: 'TOGGLE_PLAYER', player });
   };
 
-  const updateStat = useCallback((playerName, stat, increment) => {
-    const now = Date.now();
-    if (lastUpdateRef.current && now - lastUpdateRef.current < 100) {
-      return; // Prevent rapid consecutive updates
-    }
-    lastUpdateRef.current = now;
+  //   const updateStat = useCallback((playerName, stat, increment) => {
+  //     const now = Date.now();
+  //     if (lastUpdateRef.current && now - lastUpdateRef.current < 100) {
+  //       return; // Prevent rapid consecutive updates
+  //     }
+  //     lastUpdateRef.current = now;
 
-    setPlayers((prevPlayers) => {
-      const updatedPlayers = prevPlayers.map((p) => {
-        if (p.name === playerName) {
-          const newValue = Math.max(0, p.stats[stat] + (increment ? 1 : -1));
-          if (stat === 'hasDisc') {
-            return {
-              ...p,
-              stats: { ...p.stats, [stat]: newValue > 0 ? 1 : 0 },
-            };
-          }
-          return { ...p, stats: { ...p.stats, [stat]: newValue } };
-        } else if (stat === 'hasDisc' && increment) {
-          return { ...p, stats: { ...p.stats, hasDisc: 0 } };
-        }
-        return p;
-      });
-      return updatedPlayers;
-    });
-  }, []);
+  //     setPlayers((prevPlayers) => {
+  //       const updatedPlayers = prevPlayers.map((p) => {
+  //         if (p.name === playerName) {
+  //           const newValue = Math.max(0, p.stats[stat] + (increment ? 1 : -1));
+  //           if (stat === 'hasDisc') {
+  //             return {
+  //               ...p,
+  //               stats: { ...p.stats, [stat]: newValue > 0 ? 1 : 0 },
+  //             };
+  //           }
+  //           return { ...p, stats: { ...p.stats, [stat]: newValue } };
+  //         } else if (stat === 'hasDisc' && increment) {
+  //           return { ...p, stats: { ...p.stats, hasDisc: 0 } };
+  //         }
+  //         return p;
+  //       });
+  //       return updatedPlayers;
+  //     });
+  //   }, []);
 
   const handleTouchStart = useCallback((playerName, stat, event) => {
     longPressRef.current = null;
@@ -79,11 +81,12 @@ export default function PlayerStats() {
     clearTimeout(timerRef.current);
     if (longPressRef.current === null) {
       if (stat === 'hasDisc') {
-        console.log(player);
         saveTouch(player);
         setPlayerWithDisc(player);
+      } else if (stat === 'goald') {
+        saveGoal(player);
+        setPlayerWithDisc(null);
       }
-      // updateStat(playerName, stat, true);
     }
     longPressRef.current = null;
   };
