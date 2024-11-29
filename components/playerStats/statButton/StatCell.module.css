@@ -4,11 +4,11 @@
 }
 
 .hasDiscCell {
-  width: 15%; /* Use percentage for responsive width */
+  width: 15%;
 }
 
 .dCell {
-  width: 15%; /* Use percentage for responsive width */
+  width: 15%;
 }
 
 .errorCell {
@@ -17,11 +17,11 @@
 
 .statButton {
   width: 100%;
-  aspect-ratio: 1 / 1; /* Make all buttons square */
+  aspect-ratio: 1 / 1;
   background-color: transparent;
   color: #ffffff;
   border: none;
-  font-size: clamp(20px, 3vw, 32px); /* Increased font size */
+  font-size: clamp(20px, 3vw, 32px);
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease, opacity 0.3s ease;
@@ -40,17 +40,22 @@
   opacity: 0.1;
 }
 
+.clockStoppedButton {
+  opacity: 0.1;
+  pointer-events: none;
+}
+
 .inactiveStatButton {
-  aspect-ratio: 4 / 3; /* Slightly shorter for inactive buttons */
-  font-size: clamp(18px, 2.5vw, 28px); /* Increased font size for inactive */
+  aspect-ratio: 4 / 3;
+  font-size: clamp(18px, 2.5vw, 28px);
 }
 
 .hasDiscButton {
-  background-color: transparent; /* Remove blue background */
+  background-color: transparent;
 }
 
 .hasDiscButton:hover:not(:disabled) {
-  background-color: rgba(37, 99, 235, 0.1); /* Slight blue tint on hover */
+  background-color: rgba(37, 99, 235, 0.1);
 }
 
 .dButton {
@@ -68,7 +73,7 @@
 }
 
 .statLabel {
-  font-size: clamp(16px, 2vw, 22px); /* Increased font size for stat labels */
+  font-size: clamp(16px, 2vw, 22px);
   text-transform: uppercase;
   margin-bottom: 0.5em;
 }
@@ -96,7 +101,7 @@
   background-color: transparent;
   border: none;
   color: #ffffff;
-  font-size: clamp(16px, 2vw, 22px); /* Increased font size for menu buttons */
+  font-size: clamp(16px, 2vw, 22px);
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
