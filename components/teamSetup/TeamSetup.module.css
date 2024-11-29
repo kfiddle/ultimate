@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: center;
   background: linear-gradient(to bottom right, #60a5fa, #a78bfa);
+  padding: 1rem;
 }
 
 .formContainer {
@@ -101,4 +102,100 @@
 .disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+@media (min-width: 640px) {
+  .formContainer {
+    padding: 2.5rem;
+    max-width: 32rem;
+  }
+
+  .title {
+    font-size: 2.25rem;
+  }
+
+  .input {
+    font-size: 1.125rem;
+    padding: 0.625rem;
+  }
+
+  .iconButton {
+    padding: 0.625rem;
+    font-size: 1.125rem;
+  }
+
+  .startButton {
+    padding: 0.875rem;
+    font-size: 1.125rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .formContainer {
+    padding: 3rem;
+    max-width: 36rem;
+  }
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .input {
+    font-size: 1.25rem;
+    padding: 0.75rem;
+  }
+
+  .iconButton {
+    padding: 0.75rem;
+    font-size: 1.25rem;
+  }
+
+  .startButton {
+    padding: 1rem;
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 820px) and (max-width: 1180px) {
+  .formContainer {
+    padding: 3.5rem;
+    max-width: 50rem;
+  }
+
+  .title {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  .label {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .input {
+    font-size: 1.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .iconButton {
+    padding: 1rem;
+    font-size: 1.5rem;
+  }
+
+  .startButton {
+    padding: 1.25rem;
+    font-size: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .buttonGroup {
+    margin-top: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .formContainer {
+    max-width: 42rem;
+  }
 }

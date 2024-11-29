@@ -3,9 +3,9 @@
   flex-direction: column;
   background-color: #1a202c;
   border-radius: 0.75rem;
-  overflow: hidden;
+  overflow: visible;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
+  position: relative;
 }
 
 .gameInfo {
@@ -38,24 +38,60 @@
   color: #a0aec0;
 }
 
-.timerContainer {
+.scoreMenu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #2d3748;
+  border: 2px solid #48bb78;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  min-width: 200px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  color: #a0aec0;
+  cursor: pointer;
+  padding: 0.25rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  transition: color 0.3s ease;
 }
 
-.timer {
-  font-size: 1.25rem;
+.closeButton:hover {
+  color: #48bb78;
+}
+
+.scoreDisplay {
+  font-size: 3rem;
   font-weight: bold;
-  color: #9f7aea;
+  color: #48bb78;
+  margin: 1rem 0;
 }
 
-.timerButton {
-  background: linear-gradient(to right, #4299e1, #9f7aea);
+.scoreButtons {
+  display: flex;
+  gap: 1rem;
+}
+
+.scoreButtons button {
+  background-color: #4a5568;
   border: none;
-  color: white;
-  width: 2.5rem;
-  height: 2.5rem;
+  color: #ffffff;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -64,35 +100,8 @@
   transition: all 0.3s ease;
 }
 
-.timerButton:hover {
-  opacity: 0.9;
-}
-
-.icon {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-.statsContainer {
-  display: flex;
-  justify-content: space-around;
-  padding: 0.75rem 1rem;
-}
-
-.statItem {
-  text-align: center;
-}
-
-.statLabel {
-  font-size: 0.75rem;
-  color: #a0aec0;
-  text-transform: uppercase;
-}
-
-.statValue {
-  font-size: 1.125rem;
-  font-weight: bold;
-  color: #4299e1;
+.scoreButtons button:hover {
+  background-color: #48bb78;
 }
 
 @media (max-width: 640px) {
@@ -101,12 +110,12 @@
     gap: 0.5rem;
   }
 
-  .statsContainer {
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .statItem {
-    flex: 1 1 30%;
+  .scoreMenu {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 300px;
   }
 }

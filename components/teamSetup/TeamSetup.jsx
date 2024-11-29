@@ -1,25 +1,19 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { GameContext } from '../contextProviders/GameContext.jsx';
-
 import usePush from '../../hooks/usePush';
 import useGet from '../../hooks/useGet.js';
-
 import styles from './TeamSetup.module.css';
 
 const testHomeTeam = '67479c3b15308de9f27d17ce';
 const rivalTestTeam = '674796d715308de9f27d17c2';
 
-const TeamSetup = ({ startGame }) => {
+export default function Component({ startGame }) {
   const { dispatch } = useContext(GameContext);
-
   const [teamName, setTeamName] = useState('');
   const [players, setPlayers] = useState(['', '', '', '']);
   const [isFormValid, setIsFormValid] = useState(false);
 
   const createTeamAndPlayers = usePush('teams/create-team-and-players');
-
-  // const { name, location, date, teamIds, playerIds } = req.body;
-
   const getter = useGet('players/team/67479c3b15308de9f27d17ce');
   const pusher = usePush('games');
 
@@ -74,19 +68,16 @@ const TeamSetup = ({ startGame }) => {
             hasDisc: false,
           }));
 
-          // at start of game, all players are on bench
           dispatch({ type: 'SET_BENCHED_PLAYERS', presentPlayers });
           dispatch({ type: 'SET_TEAM', teamName: teamName, teamId: result.teamId });
 
           startGame();
         } else {
           console.error('Failed to create team and players:', result.message);
-          // Handle error (e.g., show error message to user)
           alert('Failed to create team and players. Please try again.');
         }
       } catch (error) {
         console.error('Error creating team and players:', error);
-        // Handle error (e.g., show error message to user)
         alert('An error occurred while creating the team and players. Please try again.');
       }
     }
@@ -144,8 +135,6 @@ const TeamSetup = ({ startGame }) => {
         </div>
 
         <button
-          // onClick={handleStartGame}
-          // disabled={!isFormValid}
           onClick={gameTestStarter}
           className={`${styles.startButton} ${!isFormValid ? styles.disabled : ''}`}
         >
@@ -154,6 +143,4 @@ const TeamSetup = ({ startGame }) => {
       </div>
     </div>
   );
-};
-
-export default TeamSetup;
+}

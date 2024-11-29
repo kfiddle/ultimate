@@ -40,10 +40,27 @@ export default function PlayerStats() {
     if (isCurrentlyActive) {
       const startTime = fieldInstances[player._id].startTime;
       saveFieldInstance(player, startTime, currentTime);
+
+      // Check if the player being benched has the disc
+      if (playerWithDisc && playerWithDisc._id === player._id) {
+        setPlayerWithDisc(null);
+      }
     }
 
     dispatch({ type: 'TOGGLE_PLAYER', player });
   };
+
+  //   const togglePlayerActive = (player) => {
+  //     const isCurrentlyActive = activePlayers.some((p) => p._id === player._id);
+  //     const currentTime = time;
+
+  //     if (isCurrentlyActive) {
+  //       const startTime = fieldInstances[player._id].startTime;
+  //       saveFieldInstance(player, startTime, currentTime);
+  //     }
+
+  //     dispatch({ type: 'TOGGLE_PLAYER', player });
+  //   };
 
   //   const updateStat = useCallback((playerName, stat, increment) => {
   //     const now = Date.now();
@@ -93,8 +110,10 @@ export default function PlayerStats() {
           setPlayerWithDisc(null);
           dispatch({ type: 'UPDATE_TEAM_SCORE' });
         });
-        setPlayerWithDisc(null);
-        dispatch({ type: 'UPDATE_TEAM_SCORE' });
+        // saveTouch(player,  playerWithDisc?.touchId, 'goal');
+
+        // setPlayerWithDisc(null);
+        // dispatch({ type: 'UPDATE_TEAM_SCORE' });
       } else if (['drop', 'throw', 'stall'].includes(stat) && playerWithDisc?.touchId) {
         touchEditor({ turnover: stat });
         setPlayerWithDisc(null);
@@ -129,7 +148,6 @@ export default function PlayerStats() {
 
   return (
     <div className={styles.chartContainer} ref={containerRef}>
-      <button onClick={() => console.log(playerWithDisc)}>TEST</button>
       <table className={styles.statsTable}>
         <thead>
           <tr>
@@ -183,7 +201,7 @@ export default function PlayerStats() {
       </table>
       <div className={styles.benchedPlayerList}>
         {benchedPlayers.map((player) => (
-          <div key={player.name} className={styles.benchedPlayerDiv}>
+          <div key={player._id} className={styles.benchedPlayerDiv}>
             <PlayerName player={player} onToggleActive={togglePlayerActive} isActive={false} />
           </div>
         ))}
