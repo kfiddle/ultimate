@@ -4,7 +4,7 @@ import Disc from '../../disc/Disc.jsx';
 import styles from './StatCell.module.css';
 const StatCell = ({ stat, value, isActive, hasDisc, onTouchStart, onTouchEnd, menuOpen, onMenuAction, onCloseMenu }) => {
   const isErrorStat = ['drop', 'throw', 'stall'].includes(stat);
-  const isDisabled = !isActive || (isErrorStat && !hasDisc);
+  const isDisabled = !hasDisc || (isErrorStat && !hasDisc);
 
   return (
     <td
@@ -16,7 +16,7 @@ const StatCell = ({ stat, value, isActive, hasDisc, onTouchStart, onTouchEnd, me
       <button
         className={`
                     ${styles.statButton}
-                    ${!isActive ? styles.inactiveStatButton : ''}
+                    ${!hasDisc ? styles.inactiveStatButton : ''}
                     ${stat === 'hasDisc' ? styles.hasDiscButton : ''}
                     ${stat === 'D' ? styles.dButton : ''}
                     ${isErrorStat ? styles.errorButton : ''}
@@ -26,7 +26,7 @@ const StatCell = ({ stat, value, isActive, hasDisc, onTouchStart, onTouchEnd, me
         onTouchEnd={(e) => onTouchEnd(stat, e)}
         disabled={isDisabled}
       >
-        {stat === 'hasDisc' && value > 0 ? (
+        {stat === 'hasDisc' && hasDisc? (
           <Disc className={styles.discIcon} />
         ) : (
           <span className={styles.statLabel}>{stat === 'hasDisc' ? '' : stat}</span>

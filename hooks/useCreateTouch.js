@@ -1,15 +1,15 @@
 import usePush from './usePush';
 
-const useCreateTouch = (currentGameId) => {
+const useCreateTouch = (currentGameId, time) => {
   const saveTouch = async (player, touchData) => {
     const push = usePush('touches'); // Adjust the endpoint as needed
 
     const touchInstanceData = {
       playerId: player._id,
       gameId: currentGameId,
-      type: touchData.type,
-      turnover: touchData.turnover,
-      timestamp: new Date().toISOString(),
+      type: touchData?.type || null,
+      turnover: touchData?.turnover || null,
+      timestamp: time,
     };
 
     try {

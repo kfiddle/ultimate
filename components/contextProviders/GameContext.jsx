@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, useEffect } from 'react';
+import React, { createContext, useReducer, useEffect, useCallback } from 'react';
 
 export const GameContext = createContext();
 
@@ -13,6 +13,7 @@ const initialState = {
   teamScore: 0,
   opponentScore: 0,
   time: 0,
+  isClockRunning: false,
 };
 
 const reducer = (state, action) => {
@@ -91,9 +92,10 @@ const reducer = (state, action) => {
           [action.team]: state.score[action.team] + 1,
         },
       };
-    case 'TIME': {
-      return { ...state, time: action.time };
-    }
+    case 'UPDATE_TIME':
+      return { ...state, time: action.payload };
+    case 'SET_CLOCK_RUNNING':
+      return { ...state, isClockRunning: action.payload };
     case 'RESET_GAME':
       return initialState;
     default:
@@ -104,10 +106,24 @@ const reducer = (state, action) => {
 export const GameProvider = ({ children }) => {
   const [gameState, dispatch] = useReducer(reducer, initialState);
 
-  useEffect(() => {
-    // You can add any side effects here, such as saving the game state to local storage
-    // console.log('Game state updated:', gameState);
-  }, [gameState]);
+  const updateTime = useCallback(() => {
+    dispatch({ type: 'UPDATE_TIME', payload: gameState.time + 1 });
+  }, [gameState.time]);
 
-  return <GameContext.Provider value={{ gameState, dispatch }}>{children}</GameContext.Provider>;
+  useEffect(() => {
+    let interval;
+    if (gameState.isClockRunning) {
+      interval = setInterval(updateTime, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [gameState.isClockRunning, updateTime]);
+
+  const startClock = () => dispatch({ type: 'SET_CLOCK_RUNNING', payload: true });
+  const stopClock = () => dispatch({ type: 'SET_CLOCK_RUNNING', payload: false });
+  const resetClock = () => {
+    dispatch({ type: 'SET_CLOCK_RUNNING', payload: false });
+    dispatch({ type: 'UPDATE_TIME', payload: 0 });
+  };
+
+  return <GameContext.Provider value={{ gameState, dispatch, startClock, stopClock, resetClock }}>{children}</GameContext.Provider>;
 };

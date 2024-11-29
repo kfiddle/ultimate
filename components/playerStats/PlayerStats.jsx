@@ -14,10 +14,10 @@ const stats = ['hasDisc', 'goal', 'def', 'drop', 'throw', 'stall'];
 
 export default function PlayerStats() {
   const { gameState, dispatch } = useContext(GameContext);
-  const { activePlayers, benchedPlayers, fieldInstances, currentGameId } = gameState;
+  const { activePlayers, benchedPlayers, fieldInstances, currentGameId, time } = gameState;
 
   const [menuOpen, setMenuOpen] = useState(null);
-  const [hasDisc, setHasDisc] = useState(null);
+  const [playerWithDisc, setPlayerWithDisc] = useState(null);
 
   const timerRef = useRef(null);
   const longPressRef = useRef(null);
@@ -25,7 +25,7 @@ export default function PlayerStats() {
   const lastUpdateRef = useRef(null);
 
   const { saveFieldInstance } = useCreateFieldInstance(currentGameId);
-  const { saveTouch } = useCreateTouch(currentGameId);
+  const { saveTouch } = useCreateTouch(currentGameId, time);
 
   const togglePlayerActive = (player) => {
     const isCurrentlyActive = activePlayers.some((p) => p._id === player._id);
@@ -67,8 +67,6 @@ export default function PlayerStats() {
   }, []);
 
   const handleTouchStart = useCallback((playerName, stat, event) => {
-    // when 
-    event.preventDefault();
     longPressRef.current = null;
     timerRef.current = setTimeout(() => {
       longPressRef.current = true;
@@ -76,21 +74,19 @@ export default function PlayerStats() {
     }, 500);
   }, []);
 
-  const handleTouchEnd = useCallback(
-    (player, stat, event) => {
-      event.preventDefault();
-      clearTimeout(timerRef.current);
-      if (longPressRef.current === null) {
-        if (stat === 'hasDisc') {
-            saveTouch(player);
-            setHasDisc(player)
-        }
-        // updateStat(playerName, stat, true);
+  const handleTouchEnd = (player, stat, event) => {
+    event.preventDefault();
+    clearTimeout(timerRef.current);
+    if (longPressRef.current === null) {
+      if (stat === 'hasDisc') {
+        console.log(player);
+        saveTouch(player);
+        setPlayerWithDisc(player);
       }
-      longPressRef.current = null;
-    },
-    [updateStat]
-  );
+      // updateStat(playerName, stat, true);
+    }
+    longPressRef.current = null;
+  };
 
   const handleMenuAction = (playerName, stat, increment) => {
     updateStat(playerName, stat, increment);
@@ -135,7 +131,8 @@ export default function PlayerStats() {
         <tbody>
           {activePlayers.map((player, index) => (
             <React.Fragment key={player.name}>
-              {index === activePlayers.filter((p) => p.active).length && (
+              {/* {index === activePlayers.filter((p) => p.active).length && ( */}
+              {index === activePlayers.length && (
                 <tr>
                   <td colSpan={6} className={styles.separator}></td>
                 </tr>
@@ -148,13 +145,12 @@ export default function PlayerStats() {
 
                   <PlayerName player={player} onToggleActive={togglePlayerActive} isActive={true} />
                 </td>
-                {Object.entries(stats).map((stat) => (
+                {stats.map((stat) => (
                   <StatCell
                     key={stat}
                     stat={stat}
-                    // value={'v'}
-                    isActive={false}
-                    hasDisc={player.stats.hasDisc > 0}
+                    isActive={playerWithDisc?._id === player._id}
+                    hasDisc={playerWithDisc?._id === player._id}
                     onTouchStart={(stat, e) => handleTouchStart(player.name, stat, e)}
                     onTouchEnd={(stat, e) => handleTouchEnd(player, stat, e)}
                     menuOpen={menuOpen && menuOpen.playerName === player.name && menuOpen.stat === stat}
