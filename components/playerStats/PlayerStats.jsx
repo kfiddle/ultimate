@@ -6,6 +6,7 @@ import usePut from '../../hooks/usePut.js';
 
 import useCreateFieldInstance from '../../hooks/useCreateFieldInstance.js';
 import useCreateTouch from '../../hooks/useCreateTouch.js';
+import useCreateDefense from '../../hooks/useCreateDefense.js';
 
 import StatCell from './statButton/StatCell.jsx';
 import PlayerName from './playerName/PlayerName.jsx';
@@ -30,6 +31,7 @@ export default function PlayerStats() {
 
   const { saveFieldInstance } = useCreateFieldInstance(currentGameId, time);
   const { saveTouch } = useCreateTouch(currentGameId, time);
+  const { saveDefense } = useCreateDefense(currentGameId, time);
 
   const togglePlayerActive = (player) => {
     const isCurrentlyActive = activePlayers.some((p) => p._id === player._id);
@@ -96,6 +98,8 @@ export default function PlayerStats() {
       } else if (['drop', 'throw', 'stall'].includes(stat) && playerWithDisc?.touchId) {
         touchEditor({ turnover: stat });
         setPlayerWithDisc(null);
+      } else if (stat === 'def') {
+        saveDefense(player);
       }
     }
     longPressRef.current = null;
