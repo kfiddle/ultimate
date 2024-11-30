@@ -108,12 +108,8 @@ export default function PlayerStats() {
       } else if (stat === 'goal') {
         saveTouch(player, playerWithDisc?.touchId, 'goal').then(() => {
           setPlayerWithDisc(null);
-          dispatch({ type: 'UPDATE_TEAM_SCORE' });
+          dispatch({ type: 'INCREMENT_TEAM_SCORE' });
         });
-        // saveTouch(player,  playerWithDisc?.touchId, 'goal');
-
-        // setPlayerWithDisc(null);
-        // dispatch({ type: 'UPDATE_TEAM_SCORE' });
       } else if (['drop', 'throw', 'stall'].includes(stat) && playerWithDisc?.touchId) {
         touchEditor({ turnover: stat });
         setPlayerWithDisc(null);

@@ -87,16 +87,22 @@ const reducer = (state, action) => {
         ...state,
         gameStarted: false,
       };
-    case 'UPDATE_TEAM_SCORE':
+    case 'INCREMENT_TEAM_SCORE':
       return {
         ...state,
         teamScore: state.teamScore + 1,
       };
-    case 'UPDATE_RIVAL_SCORE':
+    case 'INCREMENT_RIVAL_SCORE':
       return {
         ...state,
         rivalScore: state.rivalScore + 1,
       };
+    case 'DECREMENT_RIVAL_SCORE':
+      return {
+        ...state,
+        rivalScore: state.rivalScore - 1,
+      };
+
     case 'UPDATE_TIME':
       return { ...state, time: action.payload };
     case 'SET_CLOCK_RUNNING':

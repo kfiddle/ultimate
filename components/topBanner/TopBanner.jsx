@@ -14,10 +14,10 @@ const TopBanner = ({ onTimeUpdate }) => {
 
   const handleScoreUpdate = useCallback(
     (team, increment) => {
-      dispatch({
-        type: team === 'team' ? 'UPDATE_TEAM_SCORE' : 'UPDATE_RIVAL_SCORE',
-        payload: increment ? 1 : -1,
-      });
+      if (team === 'rival') {
+        if (increment === 'increment') dispatch({ type: 'INCREMENT_RIVAL_SCORE' });
+        else dispatch({ type: 'DECREMENT_RIVAL_SCORE' });
+      }
     },
     [dispatch]
   );
@@ -42,38 +42,45 @@ const TopBanner = ({ onTimeUpdate }) => {
     }
     if (!isLongPress) {
       dispatch({
-        type: team === 'team' ? 'UPDATE_TEAM_SCORE' : 'UPDATE_RIVAL_SCORE',
-        payload: 1,
+        type: team === 'team' ? 'INCREMENT_TEAM_SCORE' : 'INCREMENT_RIVAL_SCORE',
       });
     }
   };
 
   useEffect(() => {
+    let timeoutId;
+
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setMenuOpen(null);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    if (menuOpen) {
+      timeoutId = setTimeout(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+      }, 400);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
     return () => {
+      clearTimeout(timeoutId);
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [menuOpen]);
 
   const renderScoreMenu = (team) => (
     <div className={styles.scoreMenu} ref={menuRef}>
       <button className={styles.closeButton} onClick={() => setMenuOpen(null)}>
         <X size={24} />
       </button>
-      <div className={styles.scoreDisplay}>
-        {team === 'team' ? gameState.teamScore : gameState.rivalScore}
-      </div>
+      <div className={styles.scoreDisplay}>{team === 'team' ? gameState.teamScore : gameState.rivalScore}</div>
       <div className={styles.scoreButtons}>
-        <button onClick={() => handleScoreUpdate(team, true)}>
+        <button onClick={() => handleScoreUpdate(team, 'increment')}>
           <Plus size={24} />
         </button>
-        <button onClick={() => handleScoreUpdate(team, false)}>
+        <button onClick={() => handleScoreUpdate(team, 'decrement')}>
           <Minus size={24} />
         </button>
       </div>
