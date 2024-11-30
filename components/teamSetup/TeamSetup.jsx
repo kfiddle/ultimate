@@ -60,7 +60,7 @@ const TeamSetup = ({ startGame }) => {
           // }));
 
           dispatch({ type: 'SET_BENCHED_PLAYERS', players: game.players });
-          dispatch({ type: 'SET_TEAM', team: game.teams[0].team.name, teamId: game.teams[0].team._id });
+          dispatch({ type: 'SET_TEAM', team: game.teams[0].team });
           dispatch({ type: 'SET_CURRENT_GAME_ID', gameId: game._id });
 
           startGame();
