@@ -6,6 +6,7 @@ import { Plus, Minus, X } from 'lucide-react';
 
 const TopBanner = ({ onTimeUpdate }) => {
   const { gameState, dispatch } = useContext(GameContext);
+  const { team, rival, teamScore, rivalScore } = gameState;
   const [menuOpen, setMenuOpen] = useState(null);
   const [isLongPress, setIsLongPress] = useState(false);
   const longPressTimer = useRef(null);
@@ -75,7 +76,7 @@ const TopBanner = ({ onTimeUpdate }) => {
       <button className={styles.closeButton} onClick={() => setMenuOpen(null)}>
         <X size={24} />
       </button>
-      <div className={styles.scoreDisplay}>{team === 'team' ? gameState.teamScore : gameState.rivalScore}</div>
+      <div className={styles.scoreDisplay}>{team === 'team' ? teamScore : rivalScore}</div>
       <div className={styles.scoreButtons}>
         <button onClick={() => handleScoreUpdate(team, 'increment')}>
           <Plus size={24} />
@@ -91,14 +92,14 @@ const TopBanner = ({ onTimeUpdate }) => {
     <div className={styles.topBanner}>
       <div className={styles.gameInfo}>
         <div className={styles.scoreContainer}>
-          <span className={styles.teamName}>{gameState.team}</span>
+          <span className={styles.teamName}>{team?.name || 'us'}</span>
           <span
             className={styles.score}
             onTouchStart={() => handleTouchStart('team')}
             onTouchMove={handleTouchMove}
             onTouchEnd={() => handleTouchEnd('team')}
           >
-            {gameState.teamScore}
+            {teamScore}
           </span>
           <span className={styles.scoreDivider}>-</span>
           <span
@@ -107,9 +108,9 @@ const TopBanner = ({ onTimeUpdate }) => {
             onTouchMove={handleTouchMove}
             onTouchEnd={() => handleTouchEnd('rival')}
           >
-            {gameState.rivalScore}
+            {rivalScore}
           </span>
-          <span className={styles.teamName}>{gameState.rival}</span>
+          <span className={styles.teamName}>{rival?.name || 'them'}</span>
         </div>
         {menuOpen && renderScoreMenu(menuOpen)}
         <Clock initialTime={gameState.time} onTimeUpdate={onTimeUpdate} />

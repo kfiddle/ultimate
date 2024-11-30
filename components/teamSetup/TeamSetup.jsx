@@ -1,34 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { GameContext } from '../contextProviders/GameContext.jsx';
 import usePush from '../../hooks/usePush';
-import useGet from '../../hooks/useGet.js';
 import styles from './TeamSetup.module.css';
 
-const testHomeTeam = '67479c3b15308de9f27d17ce';
-const rivalTestTeam = '674796d715308de9f27d17c2';
-
-export default function Component({ startGame }) {
+const TeamSetup = ({ startGame }) => {
   const { dispatch } = useContext(GameContext);
   const [teamName, setTeamName] = useState('');
   const [players, setPlayers] = useState(['', '', '', '']);
   const [isFormValid, setIsFormValid] = useState(false);
 
-  const createTeamAndPlayers = usePush('teams/create-team-and-players');
-  const getter = useGet('players/team/67479c3b15308de9f27d17ce');
-  const pusher = usePush('games');
-
-  const gameTestStarter = async () => {
-    const testPlayers = await getter();
-    if (testPlayers) {
-      dispatch({ type: 'SET_BENCHED_PLAYERS', players: testPlayers });
-      dispatch({ type: 'SET_TEAM', team: 'teamName', teamId: testHomeTeam });
-      const result = await pusher({ name: 'Game One', teamIds: [testHomeTeam, rivalTestTeam], playerIds: testPlayers.map((p) => p._id) });
-      if (result) {
-        dispatch({ type: 'SET_CURRENT_GAME_ID', gameId: '6748c23eea2416561994b165' });
-        startGame();
-      }
-    }
-  };
+  const createGameWithTeamAndPlayers = usePush('games/create-game-with-team-and-players');
 
   useEffect(() => {
     const isValid = teamName.trim() !== '' && players.filter((player) => player.trim().includes(' ')).length >= 4;
@@ -56,29 +37,40 @@ export default function Component({ startGame }) {
   const handleStartGame = async () => {
     if (isFormValid) {
       try {
-        const result = await createTeamAndPlayers({
-          teamName,
-          players: players.filter((player) => player.trim() !== ''),
-        });
-        if (result.success) {
-          const presentPlayers = result.playerIds.map((id, index) => ({
-            id,
-            name: players[index].trim(),
-            isActive: true,
-            hasDisc: false,
-          }));
+        const formattedPlayers = players
+          .filter((player) => player.trim() !== '')
+          .map((player) => {
+            const [first, ...lastParts] = player.trim().split(' ');
+            return { first, last: lastParts.join(' ') };
+          });
 
-          dispatch({ type: 'SET_BENCHED_PLAYERS', presentPlayers });
-          dispatch({ type: 'SET_TEAM', teamName: teamName, teamId: result.teamId });
+        const result = await createGameWithTeamAndPlayers({
+          teamName,
+          players: formattedPlayers,
+        });
+
+        if (result.success) {
+          const { game } = result;
+          console.log(game);
+          // const presentPlayers = game.players.map(({ player }) => ({
+          //   id: player._id,
+          //   name: `${player.first} ${player.last}`,
+          //   isActive: true,
+          //   hasDisc: false,
+          // }));
+
+          dispatch({ type: 'SET_BENCHED_PLAYERS', players: game.players });
+          dispatch({ type: 'SET_TEAM', team: game.teams[0].team.name, teamId: game.teams[0].team._id });
+          dispatch({ type: 'SET_CURRENT_GAME_ID', gameId: game._id });
 
           startGame();
         } else {
-          console.error('Failed to create team and players:', result.message);
-          alert('Failed to create team and players. Please try again.');
+          console.error('Failed to create game:', result.message);
+          alert('Failed to create game. Please try again.');
         }
       } catch (error) {
-        console.error('Error creating team and players:', error);
-        alert('An error occurred while creating the team and players. Please try again.');
+        console.error('Error creating game:', error);
+        alert('An error occurred while creating the game. Please try again.');
       }
     }
   };
@@ -110,7 +102,7 @@ export default function Component({ startGame }) {
               type="text"
               value={player}
               onChange={(e) => updatePlayer(index, e.target.value)}
-              placeholder={`Player ${index + 1}`}
+              placeholder={`Player ${index + 1} (e.g., John Smith)`}
               className={styles.input}
             />
           ))}
@@ -135,7 +127,8 @@ export default function Component({ startGame }) {
         </div>
 
         <button
-          onClick={gameTestStarter}
+          onClick={handleStartGame}
+          disabled={!isFormValid}
           className={`${styles.startButton} ${!isFormValid ? styles.disabled : ''}`}
         >
           Start Game
@@ -143,4 +136,6 @@ export default function Component({ startGame }) {
       </div>
     </div>
   );
-}
+};
+
+export default TeamSetup;

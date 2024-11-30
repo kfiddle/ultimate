@@ -8,7 +8,7 @@ const initialState = {
   benchedPlayers: [], // This will initially contain all present players
   gameStarted: false,
   fieldInstances: {}, //[playerId]: { startTime: timestamp }
-  team: 'Us',
+  team: null,
   rival: 'Them',
   teamScore: 0,
   rivalScore: 0,
