@@ -10,6 +10,7 @@ import PlayerName from './playerName/PlayerName.jsx';
 import styles from './PlayerStats1.module.css';
 
 const stats = ['hasDisc', 'goal', 'def', 'turnover'];
+const turnoverTypes = ['drop', 'throw', 'stall'];
 
 export default function PlayerStats1() {
   const { gameState, dispatch } = useContext(GameContext);
@@ -73,7 +74,7 @@ export default function PlayerStats1() {
   };
 
   const handleTurnover = (type) => {
-    if (playerWithDisc && playerWithDisc.touchId) {
+    if (playerWithDisc?.touchId) {
       touchEditor({ turnover: type });
       setPlayerWithDisc(null);
     }
@@ -103,66 +104,69 @@ export default function PlayerStats1() {
 
   return (
     <div className={styles.chartContainer} ref={containerRef}>
-      <div className={styles.activePlayersContainer}>
-        <table className={styles.statsTable}>
-          <thead>
-            <tr>
-              <th className={`${styles.headerCell} ${styles.playerNameHeader}`}>Player</th>
-              {stats.map((stat) => (
-                <th
-                  key={stat}
-                  className={`${styles.headerCell} ${stat === 'hasDisc' ? styles.hasDiscHeader : ''}
-                              ${stat === 'turnover' ? styles.errorHeader : ''}
-                              `}
-                >
-                  {stat === 'hasDisc' ? 'Disc' : stat.charAt(0).toUpperCase() + stat.slice(1)}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {activePlayers.map((player, index) => (
-              <tr key={player._id} className={styles.activePlayer}>
+      <table className={styles.statsTable}>
+        <thead>
+          <tr>
+            <th className={`${styles.headerCell} ${styles.playerNameHeader}`}>Player</th>
+            {stats.map((stat) => (
+              <th
+                key={stat}
+                className={`${styles.headerCell} ${stat === 'hasDisc' ? styles.hasDiscHeader : ''}
+                            ${stat === 'turnover' ? styles.errorHeader : ''}
+                            `}
+              >
+                {stat === 'hasDisc' ? 'Disc' : stat.charAt(0).toUpperCase() + stat.slice(1)}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {activePlayers.map((player, index) => (
+            <React.Fragment key={player._id}>
+              {index === activePlayers.length && (
+                <tr>
+                  <td colSpan={stats.length + 1} className={styles.separator}></td>
+                </tr>
+              )}
+              <tr className={player.active ? styles.activePlayer : styles.inactivePlayer}>
                 <td className={styles.playerNameCell}>
                   <PlayerName player={player} onToggleActive={togglePlayerActive} isActive={true} />
                 </td>
-                {stats.map((stat) => (
-                  <td key={stat} className={styles.statCell}>
-                    {stat !== 'turnover' ? (
-                      <StatCell
-                        stat={stat}
-                        anyoneHasDisc={playerWithDisc}
-                        hasDisc={playerWithDisc?._id === player._id}
-                        onTouchStart={(stat, e) => handleTouchStart(player.name, stat, e)}
-                        onTouchEnd={(stat, e) => handleTouchEnd(player, stat, e)}
-                        menuOpen={menuOpen && menuOpen.playerName === player.name && menuOpen.stat === stat}
-                        onMenuAction={(stat, increment) => handleMenuAction(player.name, stat, increment)}
-                        onCloseMenu={closeMenu}
-                      />
-                    ) : (
-                      playerWithDisc?._id === player._id && (
-                        <div className={styles.turnoverButtons}>
-                          {['drop', 'throw', 'stall'].map((turnoverType) => (
-                            <button
-                              key={turnoverType}
-                              className={styles.turnoverButton}
-                              onClick={() => handleTurnover(turnoverType)}
-                            >
-                              {turnoverType}
-                            </button>
-                          ))}
-                        </div>
-                      )
-                    )}
-                  </td>
+                {stats.slice(0, -1).map((stat) => (
+                  <StatCell
+                    stat={stat}
+                    key={stat}
+                    anyoneHasDisc={playerWithDisc}
+                    hasDisc={playerWithDisc?._id === player._id}
+                    onTouchStart={(stat, e) => handleTouchStart(player.name, stat, e)}
+                    onTouchEnd={(stat, e) => handleTouchEnd(player, stat, e)}
+                    menuOpen={menuOpen && menuOpen.playerName === player.name && menuOpen.stat === stat}
+                    onMenuAction={(stat, increment) => handleMenuAction(player.name, stat, increment)}
+                    onCloseMenu={closeMenu}
+                  />
                 ))}
+                {index === 0 && (
+                  <td rowSpan={activePlayers.length} className={styles.turnoverCell}>
+                    <div className={styles.turnoverButtons}>
+                      {turnoverTypes.map((turnoverType) => (
+                        <button
+                          key={turnoverType}
+                          className={styles.turnoverButton}
+                          onClick={() => handleTurnover(turnoverType)}
+                          disabled={!playerWithDisc}
+                        >
+                          {turnoverType}
+                        </button>
+                      ))}
+                    </div>
+                  </td>
+                )}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className={styles.benchedPlayersContainer}>
-        <h3 className={styles.benchedPlayersHeader}>Benched Players</h3>
+            </React.Fragment>
+          ))}
+        </tbody>
+      </table>
+      <div className={styles.benchedPlayerList}>
         {benchedPlayers.map((player) => (
           <div key={player._id} className={styles.benchedPlayerDiv}>
             <PlayerName player={player} onToggleActive={togglePlayerActive} isActive={false} />

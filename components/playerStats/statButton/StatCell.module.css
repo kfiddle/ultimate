@@ -21,10 +21,10 @@
 
 .statButton {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1 / 0.5;
   /* min-height: 40px;
   max-height: 80px; */
-  height: calc(5vw + 20px);
+  /* height: calc(5vw + 20px); */
   background-color: transparent;
   color: #ffffff;
   border: none;

@@ -4,6 +4,7 @@ import { GameContext } from '../contextProviders/GameContext.jsx';
 
 import TopBanner from '../topBanner/TopBanner.jsx';
 import PlayerStats from '../playerStats/PlayerStats.jsx';
+import PlayerStats1 from '../playerStats/PlayerStats1.jsx';
 
 const GameTracker = () => {
   const { gameState, dispatch } = useContext(GameContext);
@@ -17,7 +18,7 @@ const GameTracker = () => {
   return (
     <div className="game-tracker">
       <TopBanner onTimeUpdate={onTimeUpdate} />
-      <PlayerStats />
+      <PlayerStats1 />
     </div>
   );
 };
