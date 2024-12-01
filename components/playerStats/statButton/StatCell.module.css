@@ -22,10 +22,13 @@
 .statButton {
   width: 100%;
   aspect-ratio: 1 / 1;
+  /* min-height: 40px;
+  max-height: 80px; */
+  height: calc(5vw + 20px);
   background-color: transparent;
   color: #ffffff;
   border: none;
-  font-size: clamp(20px, 3vw, 32px);
+  font-size: clamp(16px, 2vw, 24px);
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease, opacity 0.3s ease;
@@ -33,11 +36,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 5px;
 }
-
-/* .statButton:hover:not(:disabled) {
-  background-color: #6b7280;
-} */
 
 .statButton:disabled {
   cursor: not-allowed;
@@ -50,8 +50,9 @@
 }
 
 .inactiveStatButton {
-  aspect-ratio: 4 / 3;
-  font-size: clamp(18px, 2.5vw, 28px);
+  height: calc(4vw + 20px);
+  max-height: 60px;
+  font-size: clamp(14px, 1.5vw, 20px);
 }
 
 .hasDiscButton {
@@ -78,7 +79,6 @@
 
 .highlightedGoalButton {
   opacity: 1;
-  /* background-color: rgba(37, 99, 235, 0.1); */
 }
 
 .highlightedGoalButton:hover:not(:disabled) {
@@ -93,14 +93,15 @@
 }
 
 .statLabel {
-  font-size: clamp(16px, 2vw, 22px);
-  text-transform: uppercase;
-  margin-bottom: 0.5em;
+  font-size: clamp(12px, 1.5vw, 18px);
+  margin-bottom: 0.25em;
 }
 
 .discIcon {
-  width: 70%;
-  height: 70%;
+  width: 50%;
+  height: 50%;
+  max-width: 40px;
+  max-height: 40px;
   color: #ffffff;
 }
 
@@ -117,15 +118,25 @@
 
 .longPressMenu button {
   width: 100%;
-  padding: 1em;
+  padding: 0.75em;
   background-color: transparent;
   border: none;
   color: #ffffff;
-  font-size: clamp(16px, 2vw, 22px);
+  font-size: clamp(14px, 1.5vw, 20px);
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .longPressMenu button:hover {
   background-color: #6b7280;
+}
+
+@media (min-width: 1200px) {
+  .statButton {
+    max-height: 120px;
+  }
+
+  .inactiveStatButton {
+    max-height: 80px;
+  }
 }

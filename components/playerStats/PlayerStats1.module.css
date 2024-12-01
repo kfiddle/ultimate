@@ -1,0 +1,102 @@
+.chartContainer {
+  display: flex;
+  width: 100%;
+  gap: 16px;
+}
+
+.activePlayersContainer {
+  flex: 1;
+  overflow-x: auto;
+}
+
+.statsTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 4px;
+}
+
+.headerCell {
+  padding: 8px;
+  text-align: center;
+  font-weight: bold;
+  background-color: #2d3748;
+  color: #fff;
+}
+
+.playerNameHeader {
+  text-align: left;
+}
+
+.hasDiscHeader {
+  background-color: #4299e1;
+}
+
+.errorHeader {
+  background-color: #f56565;
+}
+
+.playerNameCell {
+  padding: 8px;
+  text-align: left;
+}
+
+.statCell {
+  padding: 4px;
+  text-align: center;
+}
+
+.activePlayer {
+  background-color: #4a5568;
+}
+
+.benchedPlayersContainer {
+  width: 200px;
+  background-color: #2d3748;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.benchedPlayersHeader {
+  color: #fff;
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.benchedPlayerDiv {
+  background-color: #4a5568;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.turnoverButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.turnoverButton {
+  padding: 4px 8px;
+  background-color: #f56565;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  text-transform: capitalize;
+}
+
+.turnoverButton:hover {
+  background-color: #e53e3e;
+}
+
+@media (max-width: 768px) {
+  .chartContainer {
+    flex-direction: column;
+  }
+
+  .benchedPlayersContainer {
+    width: 100%;
+  }
+}

@@ -8,41 +8,10 @@ import PlayerStats from '../playerStats/PlayerStats.jsx';
 const GameTracker = () => {
   const { gameState, dispatch } = useContext(GameContext);
 
-  const { teamName, presentPlayers, opponentName, teamScore, opponentScore } = gameState;
+  // const { teamName, presentPlayers, opponentName, teamScore, opponentScore } = gameState;
 
   const onTimeUpdate = (newTime) => {
     dispatch({ type: 'TIME', time: newTime });
-  };
-
-  const updateStat = (playerName, stat, increment) => {
-    setPlayers((prevPlayers) => {
-      const updatedPlayers = prevPlayers.map((player) =>
-        player.name === playerName ? { ...player, stats: { ...player.stats, [stat]: player.stats[stat] + (increment ? 1 : -1) } } : player
-      );
-
-      // Update overall stats
-      const newStats = updatedPlayers.reduce((acc, player) => {
-        Object.keys(player.stats).forEach((key) => {
-          acc[key] = (acc[key] || 0) + player.stats[key];
-        });
-        return acc;
-      }, {});
-      setStats(newStats);
-
-      // Update team score if the stat is 'goals'
-      if (stat === 'goals') {
-        setGameState((prevState) => ({
-          ...prevState,
-          teamScore: prevState.teamScore + (increment ? 1 : -1),
-        }));
-      }
-
-      return updatedPlayers;
-    });
-  };
-
-  const togglePlayerActive = (playerName) => {
-    setPlayers((prevPlayers) => prevPlayers.map((player) => (player.name === playerName ? { ...player, active: !player.active } : player)));
   };
 
   return (
