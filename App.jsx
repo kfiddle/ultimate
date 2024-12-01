@@ -33,8 +33,8 @@ const App = () => {
   return (
     <div>
       <AppProviders>
-        {/* {!gameStarting && <TeamSetup startGame={startGame} />} */}
-        {!gameStarting && <GameTracker />}
+        {!gameStarting && <TeamSetup startGame={startGame} />}
+        {gameStarting && <GameTracker />}
       </AppProviders>
     </div>
   );
