@@ -1,11 +1,23 @@
-/* .chartContainer {
+.chartContainer {
   height: calc(100vh - 200px);
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
   background-color: #1a1a1a;
   border-radius: 8px;
   padding: 16px;
 }
 
+.activePlayersContainer {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 16px;
+}
+
+.statsTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: clamp(4px, calc(4px + ((100vw - 415px) * 0.0235)), 5px);
+}
 
 .headerCell {
   padding: 16px 8px;
@@ -13,7 +25,7 @@
   font-weight: 600;
   color: #ffffff;
   text-transform: uppercase;
-  background-color: #3b82f6;
+  background-color: #144ba3;
   font-size: 14px;
 }
 
@@ -43,10 +55,6 @@
   height: 20px;
 }
 
-.separator {
-  height: 2.5rem;
-}
-
 .playerNameCell {
   padding: 0;
   width: 150px;
@@ -70,7 +78,18 @@
 
 .activePlayer .playerNameButton {
   color: #3b82f6;
-  font-size: 2rem;
+  font-size: clamp(1.2rem, 4vw, 1.5rem);
+  padding: 8px 4px;
+}
+
+.activePlayer:first-child .playerNameButton {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  padding: 4px 2px;
+}
+
+.activePlayer:nth-child(-n + 2) .playerNameButton {
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  padding: 6px 3px;
 }
 
 .inactivePlayer .playerNameButton {
@@ -79,31 +98,93 @@
 }
 
 .benchedPlayerList {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
+  /* display: flex; */
+  /* flex-wrap: wrap; */
   justify-content: center;
-  align-items: center;
-  gap: 15px;
-  padding: 20px;
+  gap: 8px;
+  padding: 16px;
   border-top: 2px solid #3b82f6;
-  margin: 20px 8px;
-  width: 200px;
+  background-color: #2a2a2a;
+  border-radius: 0 0 8px 8px;
 }
 
 .benchedPlayerDiv {
-  width: 100%;
+  flex: 1 1 calc(33.333% - 8px);
+  max-width: 150px;
+  margin: 10px 0;
 }
 
 .inactivePlayerNameButton {
   width: 100%;
-  padding: 16px 12px;
+  padding: 12px 8px;
   background-color: transparent;
-  border-bottom: 1px solid #4b5563;
+  border: 1px solid #4b5563;
+  border-radius: 4px;
   color: #9ca3af;
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: bold;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-} */
+}
+
+.turnoverCell {
+  vertical-align: top;
+  padding-top: 16px;
+  height: 100%;
+}
+
+.turnoverButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+}
+
+.turnoverButton {
+  flex: 1;
+  min-height: 60px;
+  padding: 12px;
+  background-color: #6b4563;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: clamp(14px, 2vw, 18px);
+  text-transform: capitalize;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.turnoverButton:hover:not(:disabled) {
+  background-color: #7c5070;
+}
+
+.turnoverButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.statCell {
+  vertical-align: top;
+}
+
+@media (min-height: 600px) {
+  .turnoverButton {
+    min-height: 80px;
+  }
+}
+
+@media (max-width: 500px) {
+  .statsTable {
+    border-spacing: 5px;
+  }
+}
+
+@media (max-width: 415px) {
+  .statsTable {
+    border-spacing: 4px;
+  }
+}

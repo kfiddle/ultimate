@@ -54,6 +54,7 @@
 
 .hasDiscButton {
   background-color: transparent;
+  height: 100%;
 }
 
 .hasDiscButton:has(.discIcon) {
