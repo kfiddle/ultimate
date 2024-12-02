@@ -17,6 +17,8 @@ export default function PlayerStats1() {
   const { activePlayers, benchedPlayers, fieldInstances, currentGameId, time } = gameState;
 
   const [menuOpen, setMenuOpen] = useState(null);
+
+  const [playerWithDiscIndex, setPlayerWithDiscIndex] = useState(null);
   const [playerWithDisc, setPlayerWithDisc] = useState(null);
 
   const timerRef = useRef(null);
@@ -53,16 +55,24 @@ export default function PlayerStats1() {
     }, 500);
   }, []);
 
-  const handleTouchEnd = (player, stat, event) => {
+  const handleTouchEnd = (player, stat, index, event) => {
     event.preventDefault();
     clearTimeout(timerRef.current);
     if (longPressRef.current === null) {
       if (stat === 'hasDisc') {
-        saveTouch(player, playerWithDisc?.touchId).then((newlySavedTouch) => {
-          setPlayerWithDisc({ ...player, touchId: newlySavedTouch._id });
-        });
+        if (index === playerWithDiscIndex) {
+          // If the same player is clicked again, reset the disc state
+          setPlayerWithDiscIndex(null);
+          setPlayerWithDisc(null);
+        } else {
+          setPlayerWithDiscIndex(index);
+          saveTouch(player, playerWithDisc?.touchId).then((newlySavedTouch) => {
+            setPlayerWithDisc({ ...player, touchId: newlySavedTouch._id });
+          });
+        }
       } else if (stat === 'goal') {
         saveTouch(player, playerWithDisc?.touchId, 'goal').then(() => {
+          setPlayerWithDiscIndex(null);
           setPlayerWithDisc(null);
           dispatch({ type: 'INCREMENT_TEAM_SCORE' });
         });
@@ -75,8 +85,10 @@ export default function PlayerStats1() {
 
   const handleTurnover = (type) => {
     if (playerWithDisc?.touchId) {
+      console.log(type, playerWithDisc.touchId);
       touchEditor({ turnover: type });
       setPlayerWithDisc(null);
+      setPlayerWithDiscIndex(null);
     }
   };
 
@@ -136,10 +148,13 @@ export default function PlayerStats1() {
                   <StatCell
                     stat={stat}
                     key={stat}
-                    anyoneHasDisc={playerWithDisc}
-                    hasDisc={playerWithDisc?._id === player._id}
+                    // anyoneHasDisc={playerWithDisc}
+                    // hasDisc={playerWithDisc?._id === player._id}
+
+                    anyoneHasDisc={playerWithDiscIndex !== null}
+                    hasDisc={playerWithDiscIndex === index}
                     onTouchStart={(stat, e) => handleTouchStart(player.name, stat, e)}
-                    onTouchEnd={(stat, e) => handleTouchEnd(player, stat, e)}
+                    onTouchEnd={(stat, e) => handleTouchEnd(player, stat, index, e)}
                     menuOpen={menuOpen && menuOpen.playerName === player.name && menuOpen.stat === stat}
                     onMenuAction={(stat, increment) => handleMenuAction(player.name, stat, increment)}
                     onCloseMenu={closeMenu}

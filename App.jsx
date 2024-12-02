@@ -28,8 +28,6 @@ const App = () => {
   //   chairsGet();
   // }, [refresher]);
 
- 
-
   return (
     <div>
       <AppProviders>

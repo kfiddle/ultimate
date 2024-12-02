@@ -1,4 +1,4 @@
-.chartContainer {
+/* .chartContainer {
   height: calc(100vh - 200px);
   overflow-y: auto;
   background-color: #1a1a1a;
@@ -6,11 +6,6 @@
   padding: 16px;
 }
 
-.statsTable {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 8px;
-}
 
 .headerCell {
   padding: 16px 8px;
@@ -91,7 +86,6 @@
   align-items: center;
   gap: 15px;
   padding: 20px;
-  /* background-color: #2a2a2a; */
   border-top: 2px solid #3b82f6;
   margin: 20px 8px;
   width: 200px;
@@ -112,4 +106,4 @@
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-}
+} */
