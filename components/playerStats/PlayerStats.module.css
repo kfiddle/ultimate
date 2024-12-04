@@ -47,6 +47,7 @@
 
 .activePlayer {
   background-color: #2a2a2a;
+  /* max-height: 15vh; */
 }
 
 .inactivePlayer {

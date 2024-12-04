@@ -153,7 +153,7 @@ export default function PlayerStats() {
                       onCloseMenu={closeMenu}
                     />
                   ))}
-                  {index === 0 && (
+                  {index === 0 && activePlayers.length > 2 && (
                     <td rowSpan={activePlayers.length} className={styles.turnoverCell}>
                       <div className={styles.turnoverButtons}>
                         {turnoverTypes.map((turnoverType) => (
