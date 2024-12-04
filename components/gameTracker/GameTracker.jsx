@@ -4,6 +4,7 @@ import { GameContext } from '../contextProviders/GameContext.jsx';
 
 import TopBanner from '../topBanner/TopBanner.jsx';
 import PlayerStats from '../playerStats/PlayerStats.jsx';
+import GameFinishButton from '../gameFinishButton/GameFinishButton.jsx';
 
 const GameTracker = () => {
   const { gameState, dispatch } = useContext(GameContext);
@@ -18,6 +19,7 @@ const GameTracker = () => {
     <div className="game-tracker">
       <TopBanner onTimeUpdate={onTimeUpdate} />
       <PlayerStats />
+      <GameFinishButton onFinish={() => console.log('game is over')}/>
     </div>
   );
 };

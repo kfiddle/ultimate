@@ -2,39 +2,39 @@ import React, { createContext, useReducer, useEffect, useCallback } from 'react'
 
 export const GameContext = createContext();
 
-// const initialState = {
-//   currentGameId: 'kshdfhfs0',
-//   activePlayers: [],
-//   benchedPlayers: [
-//     { first: 'Trudie', last: 'Harris', _id: '1' },
-//     { first: 'Barry', last: 'Sears', _id: '2' },
-//     { first: 'Maxie', last: 'Pad', _id: '3' },
-//     { first: 'Jodie', last: 'Harris', _id: '4' },
-//     { first: 'Karissa', last: 'Smith', _id: '5' },
-//   ],
-//   gameStarted: false,
-//   fieldInstances: {},
-//   team: { name: 'blue blazers', _id: '23529sdgshdgslakg' },
-//   rival: 'Them',
-//   teamScore: 0,
-//   rivalScore: 0,
-//   time: 0,
-//   isClockRunning: false,
-// };
-
 const initialState = {
-  currentGameId: '',
+  currentGameId: 'kshdfhfs0',
   activePlayers: [],
-  benchedPlayers: [], // This will initially contain all present players
+  benchedPlayers: [
+    { first: 'Trudie', last: 'Harris', _id: '1' },
+    { first: 'Barry', last: 'Sears', _id: '2' },
+    { first: 'Maxie', last: 'Pad', _id: '3' },
+    { first: 'Jodie', last: 'Harris', _id: '4' },
+    { first: 'Karissa', last: 'Smith', _id: '5' },
+  ],
   gameStarted: false,
-  fieldInstances: {}, //[playerId]: { startTime: timestamp }
-  team: null,
+  fieldInstances: {},
+  team: { name: 'blue blazers', _id: '23529sdgshdgslakg' },
   rival: 'Them',
   teamScore: 0,
   rivalScore: 0,
   time: 0,
   isClockRunning: false,
 };
+
+// const initialState = {
+//   currentGameId: '',
+//   activePlayers: [],
+//   benchedPlayers: [], // This will initially contain all present players
+//   gameStarted: false,
+//   fieldInstances: {}, //[playerId]: { startTime: timestamp }
+//   team: null,
+//   rival: 'Them',
+//   teamScore: 0,
+//   rivalScore: 0,
+//   time: 0,
+//   isClockRunning: false,
+// };
 
 const reducer = (state, action) => {
   switch (action.type) {
